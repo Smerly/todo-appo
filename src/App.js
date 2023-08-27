@@ -9,11 +9,27 @@ import ViewTask from './ViewTask/ViewTask'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css';
 
+// Redux Imports
+
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+// import { applyMiddleware } from 'redux';
+
+  // Reducers
+
+  import taskReducer from './Redux/reducers/reducer.ts';
+
 // Redux Shenanigans
 
+const store = configureStore({
+  reducer: {
+    task: taskReducer
+  }
+})
 
 function App() {
   return (
+    <Provider store={store}>
     <div className="App">
       <Router>
         <Routes>
@@ -23,6 +39,7 @@ function App() {
         </Routes>
       </Router>
     </div>
+    </Provider>
   );
 }
 
