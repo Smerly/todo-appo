@@ -2,10 +2,10 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Interface } from "readline";
 
 interface Task {
-    title: String;
+    title: string;
     priority: Number,
     complexity: Number,
-    dueDatex: String,
+    dueDatex: Number,
     checklist: Array<string>,
     tags: Array<string>,
 }
@@ -45,6 +45,11 @@ export const taskSlice = createSlice({
             // replace current information with new information
             currentState.tasks = [...currentState.tasks, action.payload]
             
+        },
+        update: (currentState, action: PayloadAction<Task>) => {
+            const title: string = action.payload.title
+            // Query the targetted task from the array of tasks by title, then change the state with the new state
+            currentState.tasks[title] = action.payload
         }
     }
 })
