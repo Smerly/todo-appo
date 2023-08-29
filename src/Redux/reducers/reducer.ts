@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { Interface } from "readline";
+import { loadState, saveState } from "../../App";
 
 interface Task {
     title: string;
@@ -35,7 +36,7 @@ export const taskSlice = createSlice({
     //         // tags: []
     //     }
     // },
-
+    
     // Reducers (functions for altering stuffs)
     reducers: {
         // Always takes 2 args; the current state holds the current or previous information on the "object"
@@ -44,6 +45,16 @@ export const taskSlice = createSlice({
         add: (currentState, action: PayloadAction<Task>) => {
             // replace current information with new information
             currentState.tasks = [...currentState.tasks, action.payload]
+            // console.log(loadState())
+            if (loadState()) {
+                console.log('loadstate exists in reducer')
+                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), ...currentState.tasks]))
+            } else {
+                console.log('loadstate DOESNT exists in reducer')
+                console.log(loadState())
+                localStorage.setItem('TASKS_STATE', JSON.stringify([currentState]))
+            }
+            
             
         },
         update: (currentState, action: PayloadAction<Task>) => {
