@@ -65,7 +65,23 @@ export const taskSlice = createSlice({
         update: (currentState, action: PayloadAction<Task>) => {
             const title: string = action.payload.title
             // Query the targetted task from the array of tasks by title, then change the state with the new state
-            currentState.tasks[title] = action.payload
+            currentState.tasks = loadState()
+            for (let i = 0; i < currentState.tasks.length; i++) {
+                if (currentState.tasks[i].title === title) {
+                    currentState.tasks[i] = action.payload
+                    localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
+                }
+            }
+        },
+        delete: (currentState, action: PayloadAction<Task>) => {
+            const title: string = action.payload.title
+            currentState.tasks = loadState()
+            for (let i = 0; i < currentState.tasks.length; i++) {
+                if (currentState.tasks[i].title === title) {
+                    currentState.tasks.splice(i, 1)
+                    localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
+                }
+            }
         }
     }
 })
