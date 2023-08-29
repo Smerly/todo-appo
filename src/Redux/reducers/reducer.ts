@@ -48,12 +48,16 @@ export const taskSlice = createSlice({
             // console.log(loadState())
             if (loadState()) {
                 console.log('loadstate exists in reducer')
-                console.log(loadState())
-                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState().tasks, ...currentState.tasks]))
+                // console.log(loadState())
+                // localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), ...currentState.tasks]))
+                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), action.payload]))
+
+                // localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState()]))
+
             } else {
                 console.log('loadstate DOESNT exists in reducer')
                 console.log(loadState())
-                localStorage.setItem('TASKS_STATE', JSON.stringify(currentState))
+                localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
             }
             
             

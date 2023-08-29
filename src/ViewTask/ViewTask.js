@@ -7,21 +7,7 @@ function ViewTask() {
     return (
         <div>
             <div>View Task</div>
-            <div className='tasks-wrapper'>
-            {loadState().map((each) => {
-                return (
-                    <div className='each-task'>
-                        <div>{each.title}</div>
-           
-                        <div>{each.priority}</div>
-                        <div>{each.complexity}</div>
-                        <div>{each.dueDatex}</div>
-                        <div>{each.checklist}</div>
-                        <div>{each.tags}</div>
-                    </div>
-                )
-            })}
-            </div>
+            
             
             
         </div>
