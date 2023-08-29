@@ -2,20 +2,28 @@ import { useSelector } from "react-redux"
 import './ViewTask.css'
 import { current } from "@reduxjs/toolkit"
 import { loadState } from "../App"
-// import { loadState } from "../App"
-
 
 function ViewTask() {
-    const tasks = useSelector((currentState) => currentState.task.tasks)
-    console.log(loadState())
-    // console.log(tasks)
-    // console.log(tasks.value)
     return (
         <div>
             <div>View Task</div>
-            {JSON.stringify(loadState())}
-            <div>-------</div>
-            {JSON.stringify(tasks)}
+            <div className='tasks-wrapper'>
+            {loadState().map((each) => {
+                return (
+                    <div className='each-task'>
+                        <div>{each.title}</div>
+           
+                        <div>{each.priority}</div>
+                        <div>{each.complexity}</div>
+                        <div>{each.dueDatex}</div>
+                        <div>{each.checklist}</div>
+                        <div>{each.tags}</div>
+                    </div>
+                )
+            })}
+            </div>
+            
+            
         </div>
     )
 }

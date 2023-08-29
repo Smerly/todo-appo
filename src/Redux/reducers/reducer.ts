@@ -1,6 +1,6 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { Interface } from "readline";
-import { loadState, saveState } from "../../App";
+import { loadState } from "../../App";
 
 interface Task {
     title: string;
@@ -48,11 +48,12 @@ export const taskSlice = createSlice({
             // console.log(loadState())
             if (loadState()) {
                 console.log('loadstate exists in reducer')
-                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), ...currentState.tasks]))
+                console.log(loadState())
+                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState().tasks, ...currentState.tasks]))
             } else {
                 console.log('loadstate DOESNT exists in reducer')
                 console.log(loadState())
-                localStorage.setItem('TASKS_STATE', JSON.stringify([currentState]))
+                localStorage.setItem('TASKS_STATE', JSON.stringify(currentState))
             }
             
             
