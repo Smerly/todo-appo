@@ -2,12 +2,12 @@ import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { add } from "../Redux/reducers/reducer.ts";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
 
 
 function NewTask() {
-
+    
     const navigate = useNavigate()
 
     // useStates Variables
@@ -29,75 +29,107 @@ function NewTask() {
 
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
     return (
-        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <div>New Task</div>
-            <form>
-                {title}
-                <input type='text' placeholder='title' onChange={(e) => setTitle(e.target.value)}/>
+        <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+            <Link to={`/`} className='back-arrow'></Link>
+            
+            {/* Title */}
 
-                <h1> {priority} </h1>
-                {optionsArr.map((each, i) => {
-                    return (
-                        <div key={i}>
-                            <label>{each}</label>
-                            <input name='priority' type='radio' value={each} onChange={(e) => setPriority(each)}/>
+            <h1>New Task</h1>
+            <div className='task-box-new'>
+                <div className='dashed-decoration-new'>
+                    <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
+                        <h1> Enter Task Title </h1>
+                        <input className='input-text' style={{height: 40, fontSize: 20, width: '20vw'}} type='text' placeholder='title' onChange={(e) => setTitle(e.target.value)}/>
+                        
+                        <div className='radio-section'>
+
+                        {/* Priority */}
+
+                        <h1>How Much Priority Will This Task Take?</h1>
+                            <div className='radio-buttons'>
+                            {optionsArr.map((each, i) => {
+                                return (
+                                    <div key={i} className='radio-div'>
+                                        <label style={{textAlign: 'center'}}>{each}</label>
+                                        <input className='radio-button' name='priority' type='radio' value={each} onChange={(e) => setPriority(each)}/>
+                                    </div>
+                                )
+                            })}
+                            </div>
+
+                            {/* Complexity */}
+                        
+                            <h1>How Complex is your Task?</h1>
+                            <div className='radio-buttons'>
+                            
+                            {optionsArr.map((each, i) => {
+                                return (
+                                    <div key={i} className='radio-div'>
+                                        <label style={{textAlign: 'center'}}>{each}</label>
+                                        <input className='radio-button' name='complexity' type='radio' value={each} onChange={(e) => setComplexity(each)}/>
+                                    </div>  
+                                )
+                            })}
+                            </div>
                         </div>
-                    )
-                })}
-              
-                <h1>{complexity}</h1>
-                {optionsArr.map((each, i) => {
-                    return (
-                        <div key={i}>
-                            <label>{each}</label>
-                            <input name='complexity' type='radio' value={each} onChange={(e) => setComplexity(each)}/>
-                        </div>  
-                    )
-                })}
-                {dueDate}
-                <div style={{display: 'flex', flexDirection: 'column'}}>
-                <input
-                    type="datetime-local"
-                    id="meeting-time"
-                    name="meeting-time"
-                    onChange={(e) => {
-                        setDueDate(new Date(e.target.value).getTime())
-                    }}
-                />
-                {checklist.length}
-                {checklist.map((each, i) => {
-                    return (
-                        <div key={i}>{each}</div>
-                    )
-                })}
-                <input type='text' className='temp-margin' onChange={(e) => setEachListItem(e.target.value)}/>
-                <button className='temp-margin' onClick={(e) => {
-                    e.preventDefault();
-                    return setChecklist((oldArr) => [...oldArr, eachListItem])
-                }}>Enter Checklist Item</button>
 
-                {tags}
-                <input type='text' className='temp-margin' onChange={(e) => setEachTag(e.target.value)}/>
-                <button className='temp-margin' onClick={(e) => {
-                    e.preventDefault();
-                    return setTags((oldArr) => [...oldArr, eachTag])
-                }}>Enter Tag</button>
-                
+                        {/* Due Date */}
+                        
+                        <h1> Due Date </h1>
+                        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <input
+                            className='input-text'
+                            style={{
+                                margin: 'auto',
+                                width: 200,
+                                textAlign: 'center',
+                                marginBottom: 100
+                            }}
+                            type="datetime-local"
+                            onChange={(e) => {
+                                setDueDate(new Date(e.target.value).getTime())
+                            }}
+                        />
+
+                        {/* Checklist */}
+
+                        {checklist.map((each, i) => {
+                            return (
+                                <div key={i}>{each}</div>
+                            )
+                        })}
+
+                        <input className='input-text' type='text' onChange={(e) => setEachListItem(e.target.value)}/>
+                        <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
+                            e.preventDefault();
+                            return setChecklist((oldArr) => [...oldArr, eachListItem])
+                        }}>Enter Checklist Item</button>
+
+                        {/* Tags */}
+
+                        {tags}
+                        <input className='input-text' type='text'  onChange={(e) => setEachTag(e.target.value)}/>
+                        <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
+                            e.preventDefault();
+                            return setTags((oldArr) => [...oldArr, eachTag])
+                        }}>Enter Tag</button>
+                        
+                        </div>
+
+                        <button className='custom-submit' type='submit' onClick={() => {
+                        dispatch(add({
+                            title: title,
+                            priority: priority,
+                            complexity: complexity,
+                            dueDatex: dueDate,
+                            checklist: checklist,
+                            tags: tags
+                        }))
+                        return navigate('/')
+                    }}>Submit</button>
+                    </form>
                 </div>
-
-                
-            </form>
-            <button onClick={() => {
-                dispatch(add({
-                    title: title,
-                    priority: priority,
-                    complexity: complexity,
-                    dueDatex: dueDate,
-                    checklist: checklist,
-                    tags: tags
-                }))
-                return navigate('/')
-            }}>Submit</button>
+            </div>
         </div>
     )
 }

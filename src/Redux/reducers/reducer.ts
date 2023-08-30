@@ -21,22 +21,7 @@ const initialState: TaskSliceState = {
 
 export const taskSlice = createSlice({
     name: "task",
-    // Basically "model":
     initialState,
-    // initialState: {
-    //     tasks: {
-    //         taskList: [
-
-    //         ]
-    //         // title: "",
-    //         // priority: 0,
-    //         // complexity: 0,
-    //         // dueDatex: new Date(),
-    //         // checklist: [],
-    //         // tags: []
-    //     }
-    // },
-    
     // Reducers (functions for altering stuffs)
     reducers: {
         // Always takes 2 args; the current state holds the current or previous information on the "object"
@@ -73,7 +58,7 @@ export const taskSlice = createSlice({
                 }
             }
         },
-        delete: (currentState, action: PayloadAction<Task>) => {
+        remove: (currentState, action: PayloadAction<Task>) => {
             const title: string = action.payload.title
             currentState.tasks = loadState()
             for (let i = 0; i < currentState.tasks.length; i++) {
@@ -86,7 +71,7 @@ export const taskSlice = createSlice({
     }
 })
 
-export const {add} = taskSlice.actions
+export const {add, update, remove } = taskSlice.actions
 
 export default taskSlice.reducer;
 

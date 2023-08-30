@@ -2,7 +2,8 @@
 
 import LandingPage from './LandingPage/LandingPage'
 import NewTask from './NewTask/NewTask';
-import ViewTask from './ViewTask/ViewTask'
+import ViewTask from './ViewTask/ViewTask';
+import EditTask from './EditTask/EditTask';
 
 // Dependency Imports
 
@@ -25,7 +26,6 @@ import { logDOM } from '@testing-library/react';
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem('TASKS_STATE');
-    console.log(serializedState)
     if (serializedState === null) {
       console.log('in loadState, TASK_STATE doesnt exist')
       return undefined
@@ -71,12 +71,13 @@ const store = configureStore({
 function App() {
   return (
     <Provider store={store}>
-    <div className="App">
+    <div>
       <Router>
         <Routes>
           <Route path="/" Component={LandingPage}/>
           <Route path="/new-task" Component={NewTask}/>
-          <Route path="/view-task" Component={ViewTask}/>
+          <Route path="/view-task/:slug" Component={ViewTask}/>
+          <Route path="/edit-task/:slug" Component={EditTask}/>
         </Routes>
       </Router>
     </div>

@@ -1,6 +1,109 @@
-.tasks-wrapper {
+
+.landing-page-wrap {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.add-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 50px;
+    width: 60px;
+    height: 60px;
+    font-weight: 800;
+    background-color: rgb(210, 225, 255);
+    border: 0px white dashed;
+    border-radius: 100px;
+    margin: 1rem;
+    text-decoration: none;
+    transition: 0.1s;
+}
+
+.add-button:hover {
+    background-color: rgb(229, 238, 255);
+    /* border: 3px rgb(255, 255, 255) dashed; */
+    box-sizing: border-box; 
+}
+
+.add-button-static {
+    z-index: -1;
+    position: absolute;
+    font-size: 50px;
+    width: 60px;
+    height: 60px;
+    font-weight: 800;
+    background-color: rgb(255, 255, 255);
+    border: 2px rgb(238, 238, 238) dashed;
+    border-radius: 100px;
+    margin: 1rem;
+    margin-bottom: 2.5rem;
+    margin-right: 2.5rem;
+    
+}
+
+.regular-texted {
+    text-decoration: none;
+    color: black;
+}
+
+.tasks-wrapper {
+    display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-wrap: wrap;
+    border: 3px rgb(222, 233, 255) dashed;
+    background-color: rgb(238, 243, 255);
+    margin: 200px;
+    margin-top: 50px;
+    padding: 20px;
+    padding-top: 50px;
+    min-width: 600px;
+}
+
+.task-box-each {
+    display: flex;
+    min-height: 150px;
+    min-width: 300px;
+    flex-direction: column;
+    /* background: linear-gradient(to left, rgb(210, 225, 255), rgb(235, 241, 255), rgb(210, 225, 255)); */
+    background-color: rgb(210, 225, 255);
+    position: relative;
+    clip-path: polygon(0 55.00px,55.00px 0,100% 0,100% calc(100% - 55.00px),calc(100% - 55.00px) 100%,0 100%);
+    padding: 2rem;
+    transition: 0.3s;
+    margin: 40px;
+    border: 0px white solid;
+}
+
+.task-box-each:hover {
+    clip-path: polygon(0 0.00px,0.00px 0,100% 0,100% calc(100% - 0.00px),calc(100% - 0.00px) 100%,0 100%);
+    /* border: 2px rgb(131, 131, 131) solid; */
+    background-color: rgb(229, 238, 255);
+    min-width: 320px;
+    min-height: 160px;  
+}
+
+.button-overlay {
+    position: absolute;
+    border: 1px rgb(133, 133, 133) solid;
+    clip-path: polygon(0 55.00px,55.00px 0,100% 0,100% calc(100% - 55.00px),calc(100% - 55.00px) 100%,0 100%);
+    min-height: 150px;
+    min-width: 300px;
+    /* z-index: 20; */
+    /* left: 100px; */
+}
+
+.button-overlay {
+    content: '';
+    position: absolute;
+    /* top: 0; right: 0; */
+    border-top: 80px solid white;
+    border-left: 80px solid white;
+    width: 0;
 }

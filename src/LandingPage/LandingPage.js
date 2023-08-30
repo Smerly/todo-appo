@@ -9,15 +9,17 @@ function LandingPage() {
         console.log(loadState())
         if (loadState()) {
                 return loadState().map((each) => {
-                
                     return (
-                        <div className='each-task'>
-                            <div>{each.title}</div>
-                            <div>{each.priority}</div>
-                            <div>{each.complexity}</div>
-                            <div>{each.dueDatex}</div>
-                            <div>{each.checklist}</div>
-                            <div>{each.tags}</div>
+                        <div>
+                            <div className='button-overlay' />
+                            <Link to={`/view-task/${each.title}`} className='task-box-each' style={{textDecoration: 'none'}}>
+        
+                                    <h2 className='regular-texted'>{each.title}</h2>
+                                    <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
+                                    <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
+                                    <div className='regular-texted'>{`${new Date(each.dueDatex).getMonth()}/${new Date(each.dueDatex).getDay()}/${new Date(each.dueDatex).getFullYear()}`}</div>
+                                
+                            </Link>
                         </div>
                     )
                 } )
@@ -30,19 +32,20 @@ function LandingPage() {
     // const tasks = useSelector((currentState) => currentState.task)
     // console.log(tasks)
     console.log('in landing page')
+    
     return (
         <div>
-            <div>
+            <div className='landing-page-wrap'>
                 <h1>
-                    Landing Page
+                    Tasks
                 </h1> 
-              
-                <Link to={`/view-task`}>ViewTask</Link>
-                <Link to={`/new-task`}>NewTask</Link>
+                
+                <Link to={`/new-task`} className='add-button'>
+                    {/* <div className="add-button-static"/> */}
+                +</Link>
+                {/* <Link>NewTask</Link> */}
                 <div className='tasks-wrapper'>
                 {listOfTasks()}
-                {JSON.stringify(tasks)}
-                
             </div>
             </div>
         </div>

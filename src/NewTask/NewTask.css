@@ -1,4 +1,134 @@
-.temp-margin {
-    width: 200px;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;1,600&display=swap');
+input, button {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.back-arrow {
+    background: url(../images/arrow-pointer.png);
+    position: absolute;
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 8vw;
+    height: 8vw;
+    left: 5%;
+    top: 6%;
+  }
+
+.new-task-wrapper {
+    background: linear-gradient();
+}
+
+.radio-section {
+ margin: 0px;
+}
+
+.input-text {
+    height: 30px;
+    width: 40vw;
     margin: 20px;
+    border-radius: 50px;
+    border: 1px black solid;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.task-box-new {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 95rem;
+    /* height: 100%; */
+    min-width: 50vw;
+    background-color: rgb(210, 225, 255);
+    clip-path: polygon(0 60.00px,60.00px 0,100% 0,100% calc(100% - 60.00px),calc(100% - 60.00px) 100%,0 100%);
+    position: relative;
+    padding: 2rem;
+    /* resize: both;
+    overflow: auto; */
+}
+
+.custom-button {
+    text-shadow: -1px 1px 0 #ffffff,
+                          1px 1px 0 #ffffff,
+                         1px -1px 0 #ffffff,
+                        -1px -1px 0 #ffffff;
+    color: black;
+    font-size: 15px;
+    width: 200px;
+    margin: auto;
+    border: 0px white solid;
+    /* background: linear-gradient(to left, rgb(226, 234, 255), rgb(245, 248, 255), rgb(226, 234, 255)); */
+    background-color: rgb(255, 255, 255);   
+    clip-path: polygon(0 17.00px,17.00px 0,100% 0,100% calc(100% - 17.00px),calc(100% - 17.00px) 100%,0 100%);
+    height: 40px;
+    transition: 0.3s;
+    cursor:pointer;
+}
+
+.custom-button:hover {
+    clip-path: polygon(0 0.00px,0.00px 0,100% 0,100% calc(100% - 0.00px),calc(100% - 0.00px) 100%,0 100%);
+    /* background-color: rgb(229, 238, 255); */
+    clip-path: polygon(0 0.00px,0.00px 0,100% 0,100% calc(100% - 0.00px),calc(100% - 0.00px) 100%,0 100%);
+}
+
+.dashed-decoration-new {
+    border: 3px white dashed;
+    position: absolute;
+    padding: 3vw;
+    width: 70%;
+    height: 80%;
+    resize: both;
+    overflow: auto;
+}
+
+.custom-submit {
+    text-shadow: -1px 1px 0 #434343,
+                          1px 1px 0 #434343,
+                         1px -1px 0 #434343,
+                        -1px -1px 0 #434343;
+    color: white;
+    font-size: 30px;
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    border: 0px white solid;
+    /* background: linear-gradient(to left, rgb(226, 234, 255), rgb(245, 248, 255), rgb(226, 234, 255)); */
+    background-color: rgb(255, 255, 255);
+    clip-path: polygon(0 30.00px,30.00px 0,100% 0,100% calc(100% - 30.00px),calc(100% - 30.00px) 100%,0 100%);
+    height: 60px;
+    transition: 0.3s;
+    cursor:pointer;
+}
+
+.custom-submit:hover {
+    /* border: 2px rgb(255, 255, 255) solid; */
+    clip-path: polygon(0 0.00px,0.00px 0,100% 0,100% calc(100% - 0.00px),calc(100% - 0.00px) 100%,0 100%);
+    /* background-color: rgb(229, 238, 255) */
+}
+
+.radio-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 150px;
+    
+}
+
+.radio-div {
+display: flex;
+flex-direction: column;
+}
+
+.radio-button {
+    color: rgb(56, 194, 35);
+    width: 2em;
+    height: 2em;
+}
+
+@media screen and (max-width: 620px) {
+    .input-text {
+        width: 250px;
+    }
 }
