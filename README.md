@@ -1,3 +1,7 @@
+# Todo App
+
+This is my todo app for tracking your tasks!
+
 ## How to run Todo App
 
 ### 2. Run on your local machine
