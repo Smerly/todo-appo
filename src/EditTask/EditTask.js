@@ -214,7 +214,8 @@ function ViewTask() {
                                     dueDatex: Number(dueDate),
                                     checklist: checklist,
                                     tags: tags,
-                                    originalTitle: currentTask().originalTitle
+                                    originalTitle: currentTask().originalTitle,
+                                    done: currentTask().done
                                 }))
                                 return navigate('/')
                             }

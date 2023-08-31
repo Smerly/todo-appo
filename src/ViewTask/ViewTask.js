@@ -4,7 +4,7 @@ import './ViewTask.css'
 import { current } from "@reduxjs/toolkit"
 import { loadState } from "../App"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { remove } from "../Redux/reducers/reducer.ts"
+import { remove, update } from "../Redux/reducers/reducer.ts"
 
 function ViewTask() {
     const slug = useParams().slug
@@ -28,6 +28,38 @@ function ViewTask() {
 
     function containsWhitespace(str) {
         return /\s/.test(str);
+    }
+
+    const checklistExists = () => {
+        if (currentTask().checklist.length > 0) {
+            return (
+                 <div className='checklist-box'>
+                    {currentTask().checklist.map((each) => {
+                        return (
+                            <div className='list-item-box'>{each}</div>
+                        )
+                    })}
+                </div>
+            )
+        } else {
+            return <header>No Checklist Items yet.</header>
+        }
+    }
+
+    const tagsExists = () => {
+        if (currentTask().tags.length > 0) {
+            return (
+                <div className='tags-box'>
+                    {currentTask().tags.map((each) => {
+                        return (
+                            <div className='tag-box'>{each}</div>
+                        )
+                    })}
+                </div>
+            )
+        } else {
+            return <header> No Tags Yet.</header>
+        }
     }
 
     const ridOfSpaceAfter = (arr) => {
@@ -74,27 +106,27 @@ function ViewTask() {
                         }} className='delete-icon'>X</button>
                     </div>
                     <header>Due {`${monthsArr[new Date(currentTask().dueDatex).getMonth()]} ${new Date(currentTask().dueDatex).getDate()}, ${new Date(currentTask().dueDatex).getFullYear()}`}</header>
+                    <button className='custom-button' style={{margin: 20}} onClick={() => {
+                                        dispatch(update({
+                                            title: currentTask().title,
+                                            priority: currentTask().priority,
+                                            complexity: currentTask().complexity,
+                                            dueDatex: Number(currentTask().dueDate),
+                                            checklist: currentTask().checklist,
+                                            tags: currentTask().tags,
+                                            originalTitle: currentTask().originalTitle,
+                                            done: !currentTask().done
+                                        }))
+                                        navigate('/')
+                                    }}> done </button>
                     <h3>Priority: {currentTask().priority}</h3>
                     <h3>Complexity: {currentTask().complexity}</h3>
-                    <h3>Checklist:</h3>
-                    <div className='checklist-box'>
-                    {currentTask().checklist.map((each) => {
-                        return (
-                            <div className='list-item-box'>{each}</div>
-                        )
-                    })}
-
                     
-                    </div>
-                    <h2> Tags </h2>
-                    <div className='tags-box'>
-                   
-                    {currentTask().tags.map((each) => {
-                        return (
-                            <div className='tag-box'>{each}</div>
-                        )
-                    })}
-                    </div>
+                    <h3>Checklist:</h3>
+                    {checklistExists()}
+
+                    <h3> Tags: </h3>
+                    {tagsExists()}
                 </div>
             </div>
             

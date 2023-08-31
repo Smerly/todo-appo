@@ -156,7 +156,8 @@ function NewTask() {
                                 dueDatex: Number(dueDate),
                                 checklist: checklist,
                                 tags: tags,
-                                originalTitle: title
+                                originalTitle: title,
+                                done: false
                             }))
                             return navigate('/')
                         }

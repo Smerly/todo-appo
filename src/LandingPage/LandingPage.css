@@ -107,3 +107,18 @@
     border-left: 80px solid white;
     width: 0;
 }
+
+.custom-select {
+    background-color: rgb(255, 255, 255);
+    /* width: 500px; */
+    height: 35px;
+    border-radius: 100px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    transition: 0.3s;
+}
+
+.custom-select:hover {
+    background-color: rgb(210, 225, 255);
+    border: 0px;
+}

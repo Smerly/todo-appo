@@ -9,7 +9,8 @@ interface Task {
     dueDatex: Number,
     checklist: Array<string>,
     tags: Array<string>,
-    originalTitle: string
+    originalTitle: string,
+    done: boolean
 }
 
 interface TaskSliceState {
@@ -83,7 +84,7 @@ export const taskSlice = createSlice({
     }
 })
 
-export const {add, update, remove } = taskSlice.actions
+export const { add, update, remove } = taskSlice.actions
 
 export default taskSlice.reducer;
 
