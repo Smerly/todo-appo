@@ -68,10 +68,13 @@ export const taskSlice = createSlice({
             }
         },
         remove: (currentState, action: PayloadAction<Task>) => {
+            console.log('in remove reducer')
             const title: string = action.payload.title
             currentState.tasks = loadState()
             for (let i = 0; i < currentState.tasks.length; i++) {
                 if (currentState.tasks[i].title === title) {
+                    console.log('found:')
+                    console.log(`${currentState.tasks[i].title} === ${title}`)
                     currentState.tasks.splice(i, 1)
                     localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
                 }

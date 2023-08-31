@@ -92,7 +92,7 @@ function ViewTask() {
                 <div className='dashed-decoration-new'>
                     <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
                         <h1> Task Title </h1>
-                        <input className='input-text' placeholder={currentTask().title} style={{height: 40, fontSize: 20, width: '20vw'}} type='text' onChange={(e) => setTitle(e.target.value)}/>
+                        <input className='input-text' defaultValue={currentTask().title} style={{height: 40, fontSize: 20, width: '20vw'}} type='text' onChange={(e) => setTitle(e.target.value)}/>
                         
                         <div className='radio-section'>
 

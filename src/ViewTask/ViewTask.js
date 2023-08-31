@@ -60,7 +60,18 @@ function ViewTask() {
                     <div style={{display: 'flex', flexDirection: 'row'}}>
                         <h1 className='box-text' style={{ marginRight: 'auto'}}>{currentTask().title}</h1>
                         <Link to={`/edit-task/${currentTask().title}`} className='edit-icon'></Link>
-                        <Link className='delete-icon'>X</Link>
+                        <button onClick={() => {
+                            dispatch(remove({
+                                title: currentTask().title,
+                                priority: currentTask().priority,
+                                complexity: currentTask().complexity,
+                                dueDatex: Number(currentTask().dueDate),
+                                checklist: currentTask().checklist,
+                                tags: currentTask().tags,
+                                originalTitle: currentTask().title
+                            }))
+                            navigate('/')
+                        }} className='delete-icon'>X</button>
                     </div>
                     <header>Due {`${monthsArr[new Date(currentTask().dueDatex).getMonth()]} ${new Date(currentTask().dueDatex).getDate()}, ${new Date(currentTask().dueDatex).getFullYear()}`}</header>
                     <h3>Priority: {currentTask().priority}</h3>
