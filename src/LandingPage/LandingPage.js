@@ -17,7 +17,7 @@ function LandingPage() {
                                     <h2 className='regular-texted'>{each.title}</h2>
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
-                                    <div className='regular-texted'>{`${new Date(each.dueDatex).getMonth()}/${new Date(each.dueDatex).getDay()}/${new Date(each.dueDatex).getFullYear()}`}</div>
+                                    <div className='regular-texted'>{`${new Date(each.dueDatex).getMonth()+1}/${new Date(each.dueDatex).getDate()}/${new Date(each.dueDatex).getFullYear()}`}</div>
                                 
                             </Link>
                         </div>

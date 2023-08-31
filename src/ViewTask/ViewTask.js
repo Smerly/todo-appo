@@ -4,7 +4,7 @@ import './ViewTask.css'
 import { current } from "@reduxjs/toolkit"
 import { loadState } from "../App"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { update } from "../Redux/reducers/reducer.ts"
+import { remove } from "../Redux/reducers/reducer.ts"
 
 function ViewTask() {
     const slug = useParams().slug
@@ -21,9 +21,26 @@ function ViewTask() {
     const [eachTag, setEachTag] = useState('')
     
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
+    const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
+    const ridOfSpaceAfter = (arr) => {
+        let tempRemoveAmount = 0;
+        for (let i = arr.length; i > 0; i--) {
+            if (containsWhitespace(arr[i])) {
+                console.log(arr.slice(0, i))
+                return arr.slice(0, i)
+            } else {
+                tempRemoveAmount++
+            }
+        }
+    }
 
     const currentTask = () => {
         for (let i = 0; i < loadState().length; i++) {
@@ -45,6 +62,7 @@ function ViewTask() {
                         <Link to={`/edit-task/${currentTask().title}`} className='edit-icon'></Link>
                         <Link className='delete-icon'>X</Link>
                     </div>
+                    <header>Due {`${monthsArr[new Date(currentTask().dueDatex).getMonth()]} ${new Date(currentTask().dueDatex).getDate()}, ${new Date(currentTask().dueDatex).getFullYear()}`}</header>
                     <h3>Priority: {currentTask().priority}</h3>
                     <h3>Complexity: {currentTask().complexity}</h3>
                     <h3>Checklist:</h3>

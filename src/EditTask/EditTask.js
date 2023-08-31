@@ -13,6 +13,10 @@ function ViewTask() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    function containsWhitespace(str) {
+        return /\s/.test(str);
+    }
+
     const currentTask = () => {
         for (let i = 0; i < loadState().length; i++) {
             if (loadState()[i].title === slug) {
@@ -31,11 +35,47 @@ function ViewTask() {
     const [tags, setTags] = useState(currentTask().tags)
     const [eachTag, setEachTag] = useState('')
 
-    console.log(`title: ${title}`)
-    console.log(`priority: ${priority}`)
-    console.log(`currentTask().dueDate: ${currentTask().dueDatex}`)
-    console.log(`dueDate: ${dueDate}`)
-    console.log(`checklist: ${checklist}`)
+    const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
+    const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+    const hasSymbols = (letitle) => {
+        for (let i = 0; i < letitle.length; i++) {
+            if (symbols.includes(letitle[i])) {
+                return true
+            }
+        }
+        return false
+    }
+
+    const hasSymbolsEnd = (letitle) => {
+        for (let i = letitle.length-1; i > 0; i--) {
+            if (symbolsEnd.includes(letitle[i])) {
+                console.log(letitle[i])
+                return true
+            } else {
+                return false
+            }
+        }
+        return false
+    }
+
+    const returnZero = (num) => {
+        if (num < 10) {
+            return '0' + String(num)
+        } else {
+            return String(num)
+        }
+    }
+    // 2015-1-2T11:42:13.510'
+    const year = new Date(currentTask().dueDatex).getFullYear()
+    const day = returnZero(new Date(currentTask().dueDatex).getDay())
+    const month = returnZero(new Date(currentTask().dueDatex).getMonth()+1)
+    const hour = returnZero(new Date(currentTask().dueDatex).getHours())
+    const minute = returnZero(new Date(currentTask().dueDatex).getMinutes())
+    const second = returnZero(new Date(currentTask().dueDatex).getSeconds())
+    const millisecond = returnZero(new Date(currentTask().dueDatex).getMilliseconds())
+
+    const defaultDate = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`
+    console.log(defaultDate)
     
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
     console.log(currentTask())
@@ -61,11 +101,11 @@ function ViewTask() {
                         <h1>How Much Priority Will This Task Take?</h1>
                         <div className='radio-buttons'>
                             {optionsArr.map((each, i) => {
-                                if (currentTask().priority === each){
+                                if (priority === each){
                                     return (
                                         <div key={i} className='radio-div'>
                                             <label style={{textAlign: 'center'}}>{each}</label>
-                                            <input checked='true' className='radio-button' name='priority' type='radio' value={each} onChange={(e) => setPriority(each)}/>
+                                            <input checked={true} className='radio-button' name='priority' type='radio' value={each} onChange={(e) => setPriority(each)}/>
                                         </div>
                                     )
                                 } else {
@@ -86,11 +126,11 @@ function ViewTask() {
                             <div className='radio-buttons'>
                             
                             {optionsArr.map((each, i) => {
-                                if (currentTask().complexity === each) {
+                                if (complexity === each) {
                                     return (
                                         <div key={i} className='radio-div'>
                                             <label style={{textAlign: 'center'}}>{each}</label>
-                                            <input checked='true' className='radio-button' name='complexity' type='radio' value={each} onChange={(e) => setComplexity(each)}/>
+                                            <input checked={true} className='radio-button' name='complexity' type='radio' value={each} onChange={(e) => setComplexity(each)}/>
                                         </div>  
                                     )
                                 } else {
@@ -112,6 +152,9 @@ function ViewTask() {
                         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <input
                             className='input-text'
+                            // defaultValue='2015-01-02T11:42:13.510'
+                                        //   2023-03-08T17:57.00
+                            defaultValue={defaultDate}
                             style={{
                                 margin: 'auto',
                                 width: 200,
@@ -158,15 +201,24 @@ function ViewTask() {
                         </div>
 
                         <button className='custom-submit' type='submit' onClick={() => {
-                        dispatch(update({
-                            title: title,
-                            priority: priority,
-                            complexity: complexity,
-                            dueDatex: dueDate,
-                            checklist: checklist,
-                            tags: tags
-                        }))
-                        return navigate('/')
+
+                            if (hasSymbolsEnd(title)) {
+                                alert('Title does not accept those characters at the end (could be a space)')
+                            } else if (hasSymbols(title)) {
+                                alert('Title has non-accepted symbols')
+                            } else {
+                                dispatch(update({
+                                    title: title,
+                                    priority: priority,
+                                    complexity: complexity,
+                                    dueDatex: Number(dueDate),
+                                    checklist: checklist,
+                                    tags: tags,
+                                    originalTitle: currentTask().originalTitle
+                                }))
+                                return navigate('/')
+                            }
+
                     }}>Submit</button>
                     </form>
                 </div>

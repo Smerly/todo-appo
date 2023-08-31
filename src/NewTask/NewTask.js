@@ -27,11 +27,34 @@ function NewTask() {
     const dispatch = useDispatch()
     
 
+    const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
+    const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+    const hasSymbols = (letitle) => {
+        for (let i = 0; i < letitle.length; i++) {
+            if (symbols.includes(letitle[i])) {
+                return true
+            }
+        }
+        return false
+    }
+
+    const hasSymbolsEnd = (letitle) => {
+        for (let i = letitle.length-1; i > 0; i--) {
+            if (symbolsEnd.includes(letitle[i])) {
+                console.log(letitle[i])
+                return true
+            } else {
+                return false
+            }
+        }
+        return false
+    }
+
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
-            
+
             {/* Title */}
 
             <h1>New Task</h1>
@@ -93,11 +116,11 @@ function NewTask() {
 
                         {/* Checklist */}
 
-                        {checklist.map((each, i) => {
-                            return (
-                                <div key={i}>{each}</div>
-                            )
-                        })}
+                        {checklist.map((each) => {
+                        return (
+                            <div className='tag-box'>{each}</div>
+                        )
+                    })}
 
                         <input className='input-text' type='text' onChange={(e) => setEachListItem(e.target.value)}/>
                         <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
@@ -107,7 +130,11 @@ function NewTask() {
 
                         {/* Tags */}
 
-                        {tags}
+                        {tags.map((each) => {
+                        return (
+                            <div className='tag-box'>{each}</div>
+                        )
+                    })}
                         <input className='input-text' type='text'  onChange={(e) => setEachTag(e.target.value)}/>
                         <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                             e.preventDefault();
@@ -117,15 +144,22 @@ function NewTask() {
                         </div>
 
                         <button className='custom-submit' type='submit' onClick={() => {
-                        dispatch(add({
-                            title: title,
-                            priority: priority,
-                            complexity: complexity,
-                            dueDatex: dueDate,
-                            checklist: checklist,
-                            tags: tags
-                        }))
-                        return navigate('/')
+                        if (hasSymbolsEnd(title)) {
+                            alert('Title does not accept those characters at the end (could be a space)')
+                        } else if (hasSymbols(title)) {
+                            alert('Title has non-accepted symbols')
+                        } else {
+                            dispatch(add({
+                                title: title,
+                                priority: priority,
+                                complexity: complexity,
+                                dueDatex: Number(dueDate),
+                                checklist: checklist,
+                                tags: tags,
+                                originalTitle: title
+                            }))
+                            return navigate('/')
+                        }
                     }}>Submit</button>
                     </form>
                 </div>

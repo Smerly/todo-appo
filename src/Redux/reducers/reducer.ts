@@ -9,6 +9,7 @@ interface Task {
     dueDatex: Number,
     checklist: Array<string>,
     tags: Array<string>,
+    originalTitle: string
 }
 
 interface TaskSliceState {
@@ -48,12 +49,20 @@ export const taskSlice = createSlice({
             
         },
         update: (currentState, action: PayloadAction<Task>) => {
-            const title: string = action.payload.title
+            const title: string = action.payload.originalTitle
             // Query the targetted task from the array of tasks by title, then change the state with the new state
             currentState.tasks = loadState()
+            console.log('got in update')
+            console.log(action.payload)
             for (let i = 0; i < currentState.tasks.length; i++) {
+                console.log(currentState.tasks[i].title)
                 if (currentState.tasks[i].title === title) {
+                    console.log('found')
                     currentState.tasks[i] = action.payload
+                    console.log('HEREE!!!')
+                    console.log(currentState.tasks)
+                    currentState.tasks[i].originalTitle =  currentState.tasks[i].title
+                    console.log(action.payload)
                     localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
                 }
             }
