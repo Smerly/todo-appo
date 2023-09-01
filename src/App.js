@@ -23,6 +23,7 @@ import { logDOM } from '@testing-library/react';
 
 // Redux Shenanigans
 
+  // loadState is promise for getting tasks out of local storage
 export const loadState = () => {
   try {
     const serializedState = localStorage.getItem('TASKS_STATE');
@@ -35,26 +36,8 @@ export const loadState = () => {
     return 'There was an error while doing loadstate'
   }
 }
-// console.log(loadState())
-// export const saveState = (state) => {
-//   try {
-//     console.log('saving..')
-//     const serializedState = JSON.stringify(state);  
-
-//     if (loadState()) {
-//       console.log(loadState().task.tasks)
-//       localStorage.setItem('TASKS_STATE', [...loadState().task.tasks, serializedState])
-//     } else {
-//       localStorage.setItem('TASKS_STATE', [serializedState]);
-//     }
-
-//   } catch (err) {
-//     console.log(err)
-//   }
-// }
 const persistedState = loadState();
 console.log(persistedState)
-// console.log(loadState())
 
 const store = configureStore({
   reducer: {
@@ -63,10 +46,6 @@ const store = configureStore({
   // preloadedState: persistedState
 }
 )
-
-// store.subscribe(() => {
-//   saveState(store.getState())
-// })
 
 function App() {
   return (

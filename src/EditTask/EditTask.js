@@ -7,16 +7,14 @@ import { useParams, useNavigate, Link } from "react-router-dom"
 import { update } from "../Redux/reducers/reducer.ts"
 
 function ViewTask() {
+    // Getting slug from parameters
     const slug = useParams().slug
     console.log(slug)
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    function containsWhitespace(str) {
-        return /\s/.test(str);
-    }
-
+    // Query the task we need to use
     const currentTask = () => {
         for (let i = 0; i < loadState().length; i++) {
             if (loadState()[i].title === slug) {
@@ -24,6 +22,8 @@ function ViewTask() {
             }
         }
     }
+
+    // useState Vars
 
     const [title, setTitle] = useState(currentTask().title)
     const [priority, setPriority] = useState(currentTask().priority)
@@ -35,8 +35,11 @@ function ViewTask() {
     const [tags, setTags] = useState(currentTask().tags)
     const [eachTag, setEachTag] = useState('')
 
+    // Helper functions
+
     const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
     const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+    // Helper function for checking if the title has symbols we don't allow
     const hasSymbols = (letitle) => {
         for (let i = 0; i < letitle.length; i++) {
             if (symbols.includes(letitle[i])) {
@@ -45,7 +48,7 @@ function ViewTask() {
         }
         return false
     }
-
+    // Helper function for checking if the end of the title has symbols we don't allow
     const hasSymbolsEnd = (letitle) => {
         for (let i = letitle.length-1; i > 0; i--) {
             if (symbolsEnd.includes(letitle[i])) {
@@ -58,6 +61,7 @@ function ViewTask() {
         return false
     }
 
+    // Function for returning an extra 0 to numbers below 10. Ex: 4 > 04
     const returnZero = (num) => {
         if (num < 10) {
             return '0' + String(num)
@@ -65,7 +69,8 @@ function ViewTask() {
             return String(num)
         }
     }
-    // 2015-1-2T11:42:13.510'
+
+    // Vars for being able to display the date and time
     const year = new Date(currentTask().dueDatex).getFullYear()
     const day = returnZero(new Date(currentTask().dueDatex).getDay())
     const month = returnZero(new Date(currentTask().dueDatex).getMonth()+1)
@@ -77,6 +82,7 @@ function ViewTask() {
     const defaultDate = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`
     console.log(defaultDate)
     
+    // Helper array for radio input field 
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
     console.log(currentTask())
     return (
@@ -200,8 +206,9 @@ function ViewTask() {
                         
                         </div>
 
+                        {/* Submit Button */}
                         <button className='custom-submit' type='submit' onClick={() => {
-
+                            // Checking for edge case of faulty title
                             if (hasSymbolsEnd(title)) {
                                 alert('Title does not accept those characters at the end (could be a space)')
                             } else if (hasSymbols(title)) {

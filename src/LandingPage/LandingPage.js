@@ -6,10 +6,17 @@ import { useState } from "react"
 import { update } from "../Redux/reducers/reducer.ts"
 
 function LandingPage() {
+    
     const dispatch = useDispatch();
     const tasks = useSelector((state) => state.tasks)
+    
+    // useState Vars
+
     const [searchFilter, setSearchFilter] = useState('')
     const [sort, setSort] = useState('default')
+
+    // Displaying all tasks
+
     const listOfTasks = () => {
         console.log(loadState())
         if (loadState()) {
@@ -93,11 +100,11 @@ function LandingPage() {
                         </select>
                     </form> 
                 </div>
-                <Link to={`/new-task`} className='add-button'>
-                    {/* <div className="add-button-static"/> */}
-                +</Link>
-                {/* <Link>NewTask</Link> */}
+                <Link to={`/new-task`} className='add-button'>+</Link>
                 <div className='tasks-wrapper'>
+
+                {/* All Tasks Displayed */}
+                
                 {listOfTasks()}
             </div>
             </div>

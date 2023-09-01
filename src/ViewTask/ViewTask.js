@@ -10,6 +10,8 @@ function ViewTask() {
     const slug = useParams().slug
     console.log(slug)
 
+    // useState Vars
+
     const [title, setTitle] = useState('')
     const [priority, setPriority] = useState(0)
     const [complexity, setComplexity] = useState(0)
@@ -19,6 +21,8 @@ function ViewTask() {
     const [eachListItem, setEachListItem] = useState('')
     const [tags, setTags] = useState([])
     const [eachTag, setEachTag] = useState('')
+
+    // Helper Vars
     
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
     const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -26,9 +30,7 @@ function ViewTask() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    function containsWhitespace(str) {
-        return /\s/.test(str);
-    }
+    // These 2 functions makes it so if the checklist/taglist has at least 1 item, it will display, otherwise, it will say theres nothing
 
     const checklistExists = () => {
         if (currentTask().checklist.length > 0) {
@@ -62,18 +64,7 @@ function ViewTask() {
         }
     }
 
-    const ridOfSpaceAfter = (arr) => {
-        let tempRemoveAmount = 0;
-        for (let i = arr.length; i > 0; i--) {
-            if (containsWhitespace(arr[i])) {
-                console.log(arr.slice(0, i))
-                return arr.slice(0, i)
-            } else {
-                tempRemoveAmount++
-            }
-        }
-    }
-
+    // Querying for the task we currently need to use
     const currentTask = () => {
         for (let i = 0; i < loadState().length; i++) {
             if (loadState()[i].title === slug) {
@@ -90,8 +81,17 @@ function ViewTask() {
             <div className='task-box'>
                 <div className='dashed-decoration'>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
+
+                        {/* Title */}
+
                         <h1 className='box-text' style={{ marginRight: 'auto'}}>{currentTask().title}</h1>
+                        
+                        {/* Edit Button */}
+
                         <Link to={`/edit-task/${currentTask().title}`} className='edit-icon'></Link>
+
+                        {/* Delete Button */}
+
                         <button onClick={() => {
                             dispatch(remove({
                                 title: currentTask().title,
@@ -105,25 +105,41 @@ function ViewTask() {
                             navigate('/')
                         }} className='delete-icon'>X</button>
                     </div>
+
+                    {/* Due Date */}
+
                     <header>Due {`${monthsArr[new Date(currentTask().dueDatex).getMonth()]} ${new Date(currentTask().dueDatex).getDate()}, ${new Date(currentTask().dueDatex).getFullYear()}`}</header>
+
+                    {/* Done/Undone Button */}
+
                     <button className='custom-button' style={{margin: 20}} onClick={() => {
-                                        dispatch(update({
-                                            title: currentTask().title,
-                                            priority: currentTask().priority,
-                                            complexity: currentTask().complexity,
-                                            dueDatex: Number(currentTask().dueDate),
-                                            checklist: currentTask().checklist,
-                                            tags: currentTask().tags,
-                                            originalTitle: currentTask().originalTitle,
-                                            done: !currentTask().done
-                                        }))
-                                        navigate('/')
-                                    }}> done </button>
+                        dispatch(update({
+                            title: currentTask().title,
+                            priority: currentTask().priority,
+                            complexity: currentTask().complexity,
+                            dueDatex: Number(currentTask().dueDate),
+                            checklist: currentTask().checklist,
+                            tags: currentTask().tags,
+                            originalTitle: currentTask().originalTitle,
+                            done: !currentTask().done
+                        }))
+                        navigate('/')
+                    }}> done </button>
+
+                    {/* Priority */}
+
                     <h3>Priority: {currentTask().priority}</h3>
+
+                    {/* Complexity */}
+
                     <h3>Complexity: {currentTask().complexity}</h3>
                     
+                    {/* Checklist */}
+
                     <h3>Checklist:</h3>
                     {checklistExists()}
+
+                    {/* Tags */}
 
                     <h3> Tags: </h3>
                     {tagsExists()}
