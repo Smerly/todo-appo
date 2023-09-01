@@ -176,7 +176,7 @@ function ViewTask() {
 
                         {/* Checklist */}
 
-                        <div className='checklist-box'>
+                        <div className='checklist-box' style={{margin: 10}}>
                             {checklist.map((each) => {
                             return (
                                 <div className='list-item-box'>{each}</div>
@@ -191,7 +191,7 @@ function ViewTask() {
                         }}>Enter Checklist Item</button>
 
                         {/* Tags */}
-
+                        <div style={{marginTop: '5vw'}}></div>  
                             {tags.map((each) => {
                             return (
                                 <div className='tag-box'>{each}</div>
@@ -202,6 +202,7 @@ function ViewTask() {
                             e.preventDefault();
                             return setTags((oldArr) => [...oldArr, eachTag])
                         }}>Enter Tag</button>
+
                         
                         </div>
 

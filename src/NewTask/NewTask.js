@@ -116,7 +116,7 @@ function NewTask() {
 
                         {/* Checklist */}
                         
-                        <div className='checklist-box'>
+                        <div className='checklist-box' style={{margin: 10}}>
                             {checklist.map((each) => {
                             return (
                                 <div className='list-item-box'>{each}</div>
@@ -131,7 +131,7 @@ function NewTask() {
                         }}>Enter Checklist Item</button>
 
                         {/* Tags */}
-
+                        <div style={{marginTop: '5vw'}}></div>  
                         {tags.map((each) => {
                         return (
                             <div className='tag-box'>{each}</div>
