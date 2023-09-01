@@ -50,7 +50,7 @@ function NewTask() {
         return false
     }
 
-    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 10]
+    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
@@ -115,12 +115,14 @@ function NewTask() {
                         />
 
                         {/* Checklist */}
-
-                        {checklist.map((each) => {
-                        return (
-                            <div className='tag-box'>{each}</div>
-                        )
-                    })}
+                        
+                        <div className='checklist-box'>
+                            {checklist.map((each) => {
+                            return (
+                                <div className='list-item-box'>{each}</div>
+                            )
+                            })}
+                        </div>
 
                         <input className='input-text' type='text' onChange={(e) => setEachListItem(e.target.value)}/>
                         <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {

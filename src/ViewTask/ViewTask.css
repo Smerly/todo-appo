@@ -106,7 +106,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 40rem;
+    min-height: 60rem;
     min-width: 50vw;
     background-color: rgb(210, 225, 255);
     clip-path: polygon(0 60.00px,60.00px 0,100% 0,100% calc(100% - 60.00px),calc(100% - 60.00px) 100%,0 100%);

@@ -84,8 +84,14 @@ function LandingPage() {
                 <h1>
                     Tasks
                 </h1> 
+
+                {/* Search Filter */}
+
                 <input type='text' className='input-text' onChange={(e) => setSearchFilter(e.target.value)}/>
                 <div>
+
+                    {/* Sorter Options */}
+
                     <form>
                         <select className="custom-select" onChange={(e) => {
                             setSort(e.target.value)
