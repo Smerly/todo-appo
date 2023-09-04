@@ -1,6 +1,5 @@
 import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { Interface } from "readline";
-import { loadState } from "../../App";
 
 interface Task {
     title: string;
@@ -31,55 +30,26 @@ export const taskSlice = createSlice({
         // ex: action's attribute payload (action.payload) might have new data to replace the currentState's
         add: (currentState, action: PayloadAction<Task>) => {
             // replace current information with new information
-            currentState.tasks = [...currentState.tasks, action.payload]
-            // console.log(loadState())
-            if (loadState()) {
-                console.log('loadstate exists in reducer')
-                // console.log(loadState())
-                // localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), ...currentState.tasks]))
-                localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState(), action.payload]))
-
-                // localStorage.setItem('TASKS_STATE', JSON.stringify([...loadState()]))
-
-            } else {
-                console.log('loadstate DOESNT exists in reducer')
-                console.log(loadState())
-                localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
-            }
-            
-            
+            currentState.tasks = [...currentState.tasks, action.payload]    
         },
         update: (currentState, action: PayloadAction<Task>) => {
-            const title: string = action.payload.originalTitle
             // Query the targetted task from the array of tasks by title, then change the state with the new state
-            currentState.tasks = loadState()
-            console.log('got in update')
-            console.log(action.payload)
+            const title: string = action.payload.originalTitle
             for (let i = 0; i < currentState.tasks.length; i++) {
-                console.log(currentState.tasks[i].title)
                 if (currentState.tasks[i].title === title) {
-                    console.log('found')
                     currentState.tasks[i] = action.payload
-                    console.log('HEREE!!!')
-                    console.log(currentState.tasks)
-                    currentState.tasks[i].originalTitle =  currentState.tasks[i].title
-                    console.log(action.payload)
-                    localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
+                    currentState.tasks[i].originalTitle = currentState.tasks[i].title
                 }
             }
         },
         remove: (currentState, action: PayloadAction<Task>) => {
-            console.log('in remove reducer')
             const title: string = action.payload.title
-            currentState.tasks = loadState()
             for (let i = 0; i < currentState.tasks.length; i++) {
                 if (currentState.tasks[i].title === title) {
-                    console.log('found:')
-                    console.log(`${currentState.tasks[i].title} === ${title}`)
                     currentState.tasks.splice(i, 1)
-                    localStorage.setItem('TASKS_STATE', JSON.stringify(currentState.tasks))
                 }
             }
+            
         }
     }
 })

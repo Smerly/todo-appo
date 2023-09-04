@@ -4,18 +4,18 @@ import './ViewTask.css'
 import { current } from "@reduxjs/toolkit"
 import { loadState } from "../App"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { remove, update } from "../Redux/reducers/reducer.ts"
+import { remove, update } from "../redux/reducer.ts"
 
 function ViewTask() {
+    const tasks = useSelector((state) => state.task.tasks)
     const slug = useParams().slug
-    console.log(slug)
-
     // useState Vars
 
     const [title, setTitle] = useState('')
     const [priority, setPriority] = useState(0)
     const [complexity, setComplexity] = useState(0)
     const [dueDate, setDueDate] = useState(new Date().getTime())
+    console.log(dueDate)
 
     const [checklist, setChecklist] = useState([]);
     const [eachListItem, setEachListItem] = useState('')
@@ -66,13 +66,14 @@ function ViewTask() {
 
     // Querying for the task we currently need to use
     const currentTask = () => {
-        for (let i = 0; i < loadState().length; i++) {
-            if (loadState()[i].title === slug) {
-                return loadState()[i]
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].title === slug) {
+                return tasks[i]
             }
         }
     }
-    console.log(currentTask())
+    const currentDate = JSON.parse(currentTask().dueDatex)
+    console.log(currentDate)
     return (
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
@@ -97,7 +98,7 @@ function ViewTask() {
                                 title: currentTask().title,
                                 priority: currentTask().priority,
                                 complexity: currentTask().complexity,
-                                dueDatex: Number(currentTask().dueDate),
+                                dueDatex: Number(currentDate),
                                 checklist: currentTask().checklist,
                                 tags: currentTask().tags,
                                 originalTitle: currentTask().title
@@ -108,7 +109,7 @@ function ViewTask() {
 
                     {/* Due Date */}
 
-                    <header>Due {`${monthsArr[new Date(currentTask().dueDatex).getMonth()]} ${new Date(currentTask().dueDatex).getDate()}, ${new Date(currentTask().dueDatex).getFullYear()}`}</header>
+                    <header>Due {`${monthsArr[new Date(currentDate).getMonth()]} ${new Date(currentDate).getDate()}, ${new Date(currentDate).getFullYear()}`}, {`${new Date(currentDate).toLocaleTimeString()}`}</header>
 
                     {/* Done/Undone Button */}
 
@@ -117,7 +118,7 @@ function ViewTask() {
                             title: currentTask().title,
                             priority: currentTask().priority,
                             complexity: currentTask().complexity,
-                            dueDatex: Number(currentTask().dueDate),
+                            dueDatex: currentDate,
                             checklist: currentTask().checklist,
                             tags: currentTask().tags,
                             originalTitle: currentTask().originalTitle,

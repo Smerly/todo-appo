@@ -1,6 +1,6 @@
 import { useState, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { add } from "../Redux/reducers/reducer.ts";
+import { add } from "../redux/reducer.ts";
 import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
@@ -23,7 +23,6 @@ function NewTask() {
     const [eachTag, setEachTag] = useState('')
 
     const tasks = useSelector((currentState) => currentState.task.tasks)
-    // console.log(tasks)
     const dispatch = useDispatch()
     
 
@@ -41,7 +40,6 @@ function NewTask() {
     const hasSymbolsEnd = (letitle) => {
         for (let i = letitle.length-1; i > 0; i--) {
             if (symbolsEnd.includes(letitle[i])) {
-                console.log(letitle[i])
                 return true
             } else {
                 return false
@@ -155,7 +153,7 @@ function NewTask() {
                                 title: title,
                                 priority: priority,
                                 complexity: complexity,
-                                dueDatex: Number(dueDate),
+                                dueDatex: JSON.stringify(dueDate),
                                 checklist: checklist,
                                 tags: tags,
                                 originalTitle: title,

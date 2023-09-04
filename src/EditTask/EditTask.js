@@ -4,12 +4,13 @@ import './EditTask.css'
 import { current } from "@reduxjs/toolkit"
 import { loadState } from "../App"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { update } from "../Redux/reducers/reducer.ts"
+import { update } from "../redux/reducer.ts"
 
 function ViewTask() {
+    const tasks = useSelector((state) => state.task.tasks)
     // Getting slug from parameters
     const slug = useParams().slug
-    console.log(slug)
+    
 
     // Redux methods Initializations
     const navigate = useNavigate()
@@ -17,19 +18,18 @@ function ViewTask() {
 
     // Query the task we need to use
     const currentTask = () => {
-        for (let i = 0; i < loadState().length; i++) {
-            if (loadState()[i].title === slug) {
-                return loadState()[i]
+        for (let i = 0; i < tasks.length; i++) {
+            if (tasks[i].title === slug) {
+                return tasks[i]
             }
         }
     }
-
     // useState Vars
 
     const [title, setTitle] = useState(currentTask().title)
     const [priority, setPriority] = useState(currentTask().priority)
     const [complexity, setComplexity] = useState(currentTask().complexity)
-    const [dueDate, setDueDate] = useState(new Date(currentTask().dueDatex))
+    const [dueDate, setDueDate] = useState(new Date(currentTask().dueDatex).getTime())
 
     const [checklist, setChecklist] = useState(currentTask().checklist);
     const [eachListItem, setEachListItem] = useState('')
@@ -53,7 +53,6 @@ function ViewTask() {
     const hasSymbolsEnd = (letitle) => {
         for (let i = letitle.length-1; i > 0; i--) {
             if (symbolsEnd.includes(letitle[i])) {
-                console.log(letitle[i])
                 return true
             } else {
                 return false
@@ -70,22 +69,22 @@ function ViewTask() {
             return String(num)
         }
     }
+    const currentDate = JSON.parse(currentTask().dueDatex)
 
     // Vars for being able to display the date and time
-    const year = new Date(currentTask().dueDatex).getFullYear()
-    const day = returnZero(new Date(currentTask().dueDatex).getDay())
-    const month = returnZero(new Date(currentTask().dueDatex).getMonth()+1)
-    const hour = returnZero(new Date(currentTask().dueDatex).getHours())
-    const minute = returnZero(new Date(currentTask().dueDatex).getMinutes())
-    const second = returnZero(new Date(currentTask().dueDatex).getSeconds())
-    const millisecond = returnZero(new Date(currentTask().dueDatex).getMilliseconds())
+    const year = new Date(currentDate).getFullYear()
+    const day = returnZero(new Date(currentDate).getDate())
+    const month = returnZero(new Date(currentDate).getMonth()+1)
+    const hour = returnZero(new Date(currentDate).getHours())
+    const minute = returnZero(new Date(currentDate).getMinutes())
+    const second = returnZero(new Date(currentDate).getSeconds())
+    const millisecond = returnZero(new Date(currentDate).getMilliseconds())
+
 
     const defaultDate = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`
     console.log(defaultDate)
-    
     // Helper array for radio input field 
     const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-    console.log(currentTask())
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             
@@ -159,8 +158,6 @@ function ViewTask() {
                         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                         <input
                             className='input-text'
-                            // defaultValue='2015-01-02T11:42:13.510'
-                                        //   2023-03-08T17:57.00
                             defaultValue={defaultDate}
                             style={{
                                 margin: 'auto',
@@ -218,7 +215,7 @@ function ViewTask() {
                                     title: title,
                                     priority: priority,
                                     complexity: complexity,
-                                    dueDatex: Number(dueDate),
+                                    dueDatex: dueDate,
                                     checklist: checklist,
                                     tags: tags,
                                     originalTitle: currentTask().originalTitle,

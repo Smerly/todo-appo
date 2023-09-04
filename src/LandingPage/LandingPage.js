@@ -3,12 +3,13 @@ import './LandingPage.css'
 import { useSelector, useDispatch } from "react-redux"
 import { loadState } from "../App"
 import { useState } from "react"
-import { update } from "../Redux/reducers/reducer.ts"
+import { update } from "../redux/reducer.ts"
+import { current } from "@reduxjs/toolkit"
 
 function LandingPage() {
-    
+    const tasks = useSelector((state) => state.task.tasks)
+    console.log(tasks)
     const dispatch = useDispatch();
-    const tasks = useSelector((state) => state.tasks)
     
     // useState Vars
 
@@ -18,9 +19,8 @@ function LandingPage() {
     // Displaying all tasks
 
     const listOfTasks = () => {
-        console.log(loadState())
-        if (loadState()) {
-                return loadState().filter((input) => {
+        if (tasks) {
+                return tasks.filter((input) => {
                     if (searchFilter.length === 0) {
                         return input
                     } else if (input.title.includes(searchFilter)) {
@@ -34,7 +34,6 @@ function LandingPage() {
                     } else if (sort === 'dateHigh') {
                         return b.dueDatex - a.dueDatex
                     } else if (sort === 'priorityLow') {
-                        console.log('sort by priority')
                         return a.priority - b.priority
                     } else if (sort === 'priorityHigh') {
                         return b.priority - a.priority
@@ -44,6 +43,7 @@ function LandingPage() {
                         return b.complexity - a.complexity
                     }
                 }).map((each) => {
+                    const currentDate = JSON.parse(each.dueDatex)
                     return (
                         <div>
                             <div className='button-overlay' />
@@ -52,21 +52,8 @@ function LandingPage() {
                                     <h2 className='regular-texted'>{each.title}</h2>
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
-                                    <div className='regular-texted'>{`${new Date(each.dueDatex).getMonth()+1}/${new Date(each.dueDatex).getDate()}/${new Date(each.dueDatex).getFullYear()}`}</div>
-                                    {each.done ? <header style={{margin: 10}}>done</header> : <header style={{margin: 10}}> pending </header>}
-                                    {/* <button className='button-custom' onClick={() => {
-                                        dispatch(update({
-                                            title: each.title,
-                                            priority: each.priority,
-                                            complexity: each.complexity,
-                                            dueDatex: Number(each.dueDate),
-                                            checklist: each.checklist,
-                                            tags: each.tags,
-                                            originalTitle: each.originalTitle,
-                                            done: !each.done
-                                        }))
-                                    }}> done </button> */}
-                                
+                                    <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
+                                    {each.done ? <header style={{margin: 10}}>done</header> : <header style={{margin: 10}}> pending </header>} 
                             </Link>
                         </div>
                     )
@@ -77,7 +64,7 @@ function LandingPage() {
             )
         }
     }
-    console.log(sort)
+
     return (
         <div>
             <div className='landing-page-wrap'>
