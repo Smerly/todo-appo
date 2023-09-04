@@ -1,6 +1,6 @@
 import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import { add, remove, update } from './reducer.ts';
-import type { RootState } from "./";
+import type { RootState } from "./index.ts";
 
 
 export const listenerMiddleware = createListenerMiddleware()

@@ -1,7 +1,7 @@
 // Redux Imports
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Store, { persistor } from './redux/index.ts'
+import Store, { persistor } from './Redux/index.ts'
 // Dependency Imports
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css';
