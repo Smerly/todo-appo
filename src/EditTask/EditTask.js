@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import './EditTask.css'
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { update } from "../Redux/reducer.ts"
+import { update } from "../redux/reducer.ts"
 
 function ViewTask() {
     // Getting slug from parameters

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { add } from "../Redux/reducer.ts";
+import { add } from "../redux/reducer.ts";
 import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
 

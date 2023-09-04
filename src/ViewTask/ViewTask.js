@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import './ViewTask.css'
 import { useParams, useNavigate, Link } from "react-router-dom"
-import { remove, update } from "../Redux/reducer.ts"
+import { remove, update } from "../redux/reducer.ts"
 
 function ViewTask() {
     const tasks = useSelector((state) => state.task.tasks)
