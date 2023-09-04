@@ -1,6 +1,6 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
 import taskReducer, { add, remove, update } from './reducer.ts';
-import type { RootState } from "./index.ts";
+import type { RootState } from "./";
 
 
 export const listenerMiddleware = createListenerMiddleware()

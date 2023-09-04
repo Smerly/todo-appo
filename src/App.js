@@ -9,7 +9,7 @@ import './App.css';
 // Redux Imports
 import { Provider } from 'react-redux';
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { persistor } from './redux/index.ts';
+import { persistor } from './redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import Store from './redux/index.ts'
 // Reducers Imports
