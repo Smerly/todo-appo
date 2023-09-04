@@ -11,7 +11,7 @@ import { Provider } from 'react-redux';
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
 import { persistor } from './redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import Store from './redux/index.ts'
+import Store from './redux'
 // Reducers Imports
 import taskReducer, { add, remove, update } from './redux/reducer.ts';
 import { logDOM } from '@testing-library/react';
