@@ -1,5 +1,5 @@
-import { configureStore, createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
-import taskReducer, { add, remove, update } from './reducer.ts';
+import { createListenerMiddleware, isAnyOf } from "@reduxjs/toolkit"
+import { add, remove, update } from './reducer.ts';
 import type { RootState } from "./";
 
 

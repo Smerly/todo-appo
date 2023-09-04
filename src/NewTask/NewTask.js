@@ -1,13 +1,12 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { add } from "../redux/reducer.ts";
-import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
 
 
 function NewTask() {
-    
+    // Initialize React useNavigate()
     const navigate = useNavigate()
 
     // useStates Variables
@@ -22,12 +21,14 @@ function NewTask() {
     const [tags, setTags] = useState([])
     const [eachTag, setEachTag] = useState('')
 
-    const tasks = useSelector((currentState) => currentState.task.tasks)
+    // Initialize Redux
     const dispatch = useDispatch()
     
-
+    // Helper Vars
     const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
     const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    // Helper Methods
     const hasSymbols = (letitle) => {
         for (let i = 0; i < letitle.length; i++) {
             if (symbols.includes(letitle[i])) {
@@ -47,8 +48,6 @@ function NewTask() {
         }
         return false
     }
-
-    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>

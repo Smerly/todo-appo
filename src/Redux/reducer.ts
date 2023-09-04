@@ -1,5 +1,4 @@
-import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
-import { Interface } from "readline";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Task {
     title: string;

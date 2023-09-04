@@ -1,15 +1,11 @@
 import { Link } from "react-router-dom"
 import './LandingPage.css'
-import { useSelector, useDispatch } from "react-redux"
-import { loadState } from "../App"
+import { useSelector } from "react-redux"
 import { useState } from "react"
-import { update } from "../redux/reducer.ts"
-import { current } from "@reduxjs/toolkit"
 
 function LandingPage() {
+    // Query all tasks from Redux store
     const tasks = useSelector((state) => state.task.tasks)
-    console.log(tasks)
-    const dispatch = useDispatch();
     
     // useState Vars
 
@@ -42,13 +38,12 @@ function LandingPage() {
                     } else if (sort === 'complexityHigh') {
                         return b.complexity - a.complexity
                     }
-                }).map((each) => {
+                }).map((each, i) => {
                     const currentDate = JSON.parse(each.dueDatex)
                     return (
-                        <div>
+                        <div key={i}>
                             <div className='button-overlay' />
                             <Link to={`/view-task/${each.title}`} className='task-box-each' style={{textDecoration: 'none'}}>
-        
                                     <h2 className='regular-texted'>{each.title}</h2>
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
@@ -95,7 +90,6 @@ function LandingPage() {
                 </div>
                 <Link to={`/new-task`} className='add-button'>+</Link>
                 <div className='tasks-wrapper'>
-
                 {/* All Tasks Displayed */}
                 
                 {listOfTasks()}

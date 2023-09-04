@@ -1,20 +1,15 @@
+// Redux Imports
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import Store, { persistor } from './redux/index.ts'
+// Dependency Imports
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import './App.css';
 // Component Imports
 import LandingPage from './LandingPage/LandingPage'
 import NewTask from './NewTask/NewTask';
 import ViewTask from './ViewTask/ViewTask';
 import EditTask from './EditTask/EditTask';
-// Dependency Imports
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import './App.css';
-// Redux Imports
-import { Provider } from 'react-redux';
-import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit';
-import { persistor } from './redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import Store from './redux'
-// Reducers Imports
-import taskReducer, { add, remove, update } from './redux/reducer.ts';
-import { logDOM } from '@testing-library/react';
 
 
 // Redux Shenanigans
@@ -31,7 +26,6 @@ export const loadState = () => {
     return 'There was an error while doing loadstate'
   }
 }
-const persistedState = loadState();
 
 
 function App() {

@@ -1,45 +1,41 @@
 import { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import './EditTask.css'
-import { current } from "@reduxjs/toolkit"
-import { loadState } from "../App"
 import { useParams, useNavigate, Link } from "react-router-dom"
 import { update } from "../redux/reducer.ts"
 
 function ViewTask() {
-    const tasks = useSelector((state) => state.task.tasks)
     // Getting slug from parameters
     const slug = useParams().slug
-    
 
     // Redux methods Initializations
+    const tasks = useSelector((state) => state.task.tasks)
+
+    // Query the task we need to use
+    const currentTask = tasks.filter((each) => {
+        return each.title === slug
+    })[0]
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    // Query the task we need to use
-    const currentTask = () => {
-        for (let i = 0; i < tasks.length; i++) {
-            if (tasks[i].title === slug) {
-                return tasks[i]
-            }
-        }
-    }
     // useState Vars
 
-    const [title, setTitle] = useState(currentTask().title)
-    const [priority, setPriority] = useState(currentTask().priority)
-    const [complexity, setComplexity] = useState(currentTask().complexity)
-    const [dueDate, setDueDate] = useState(new Date(currentTask().dueDatex).getTime())
+    const [title, setTitle] = useState(currentTask.title)
+    const [priority, setPriority] = useState(currentTask.priority)
+    const [complexity, setComplexity] = useState(currentTask.complexity)
+    const [dueDate, setDueDate] = useState(new Date(currentTask.dueDatex).getTime())
 
-    const [checklist, setChecklist] = useState(currentTask().checklist);
+    const [checklist, setChecklist] = useState(currentTask.checklist);
     const [eachListItem, setEachListItem] = useState('')
-    const [tags, setTags] = useState(currentTask().tags)
+    const [tags, setTags] = useState(currentTask.tags)
     const [eachTag, setEachTag] = useState('')
 
     // Helper functions
 
     const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
     const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     // Helper function for checking if the title has symbols we don't allow
     const hasSymbols = (letitle) => {
         for (let i = 0; i < letitle.length; i++) {
@@ -69,7 +65,7 @@ function ViewTask() {
             return String(num)
         }
     }
-    const currentDate = JSON.parse(currentTask().dueDatex)
+    const currentDate = JSON.parse(currentTask.dueDatex)
 
     // Vars for being able to display the date and time
     const year = new Date(currentDate).getFullYear()
@@ -80,11 +76,7 @@ function ViewTask() {
     const second = returnZero(new Date(currentDate).getSeconds())
     const millisecond = returnZero(new Date(currentDate).getMilliseconds())
 
-
     const defaultDate = `${year}-${month}-${day}T${hour}:${minute}:${second}.${millisecond}`
-    console.log(defaultDate)
-    // Helper array for radio input field 
-    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             
@@ -98,7 +90,7 @@ function ViewTask() {
                 <div className='dashed-decoration-new'>
                     <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
                         <h1> Task Title </h1>
-                        <input className='input-text' defaultValue={currentTask().title} style={{height: 40, fontSize: 20, width: '20vw'}} type='text' onChange={(e) => setTitle(e.target.value)}/>
+                        <input className='input-text' defaultValue={currentTask.title} style={{height: 40, fontSize: 20, width: '20vw'}} type='text' onChange={(e) => setTitle(e.target.value)}/>
                         
                         <div className='radio-section'>
 
@@ -218,8 +210,8 @@ function ViewTask() {
                                     dueDatex: dueDate,
                                     checklist: checklist,
                                     tags: tags,
-                                    originalTitle: currentTask().originalTitle,
-                                    done: currentTask().done
+                                    originalTitle: currentTask.originalTitle,
+                                    done: currentTask.done
                                 }))
                                 return navigate('/')
                             }
