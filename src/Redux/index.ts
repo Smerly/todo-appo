@@ -9,7 +9,6 @@ import taskReducer, { add, remove, update } from './reducer.ts';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore } from 'redux-persist';
 // import storageSession from 'reduxjs-toolkit-persist/lib/storage/session'
-
 const persistedReducer = persistReducer({
   key: 'root',
   storage,
