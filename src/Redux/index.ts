@@ -13,8 +13,6 @@ const persistedReducer = persistReducer({
   storage,
 }, taskReducer)
 
-const tasksState = localStorage.getItem('TASKS_STATE') || null
-
 const store = configureStore({
     reducer: {
       task: persistedReducer
