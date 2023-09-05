@@ -146,6 +146,8 @@ function NewTask() {
                             </form>
                         </div>
 
+                        {/* Submit Button */}
+
                         <button className='custom-submit' type='submit' onClick={() => {
                         if (hasSymbolsEnd(title)) {
                             alert('Title does not accept those characters at the end (could be a space)')

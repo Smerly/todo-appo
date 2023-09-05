@@ -21,7 +21,6 @@ function ViewTask() {
     const currentTask = tasks.filter((each) => {
         return each.title === slug
     })[0]
-    console.log(currentTask.dueDatex)
     const currentDate = JSON.parse(currentTask.dueDatex)
     const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 

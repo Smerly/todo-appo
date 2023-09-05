@@ -61,7 +61,6 @@ function LandingPage() {
                     }
                 }).map((each, i) => {
                     const currentDate = JSON.parse(each.dueDatex)
-                    console.log(each.done)
                     return (
                         <div key={i}>
                             <div className='button-overlay' />
@@ -70,32 +69,7 @@ function LandingPage() {
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
                                     <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
-                                    {/* {each.done ? <header style={{margin: 10}}>done</header> : <header style={{margin: 10}}> pending </header>}  */}
-                                    {/* { each.done === 'done' ? doneCase(each) : pendingCase(each)} */}
-                                    {/* <select onClick={(e) => {
-                                        e.preventDefault()
-                                    }}
-                                    onChange={(e) => {
-                                        dispatch(update({
-                                            title: each.title,
-                                            priority: each.priority,
-                                            complexity: each.complexity,
-                                            dueDatex: each.dueDatex,
-                                            checklist: each.checklist,
-                                            tags: each.tags,
-                                            originalTitle: each.originalTitle,
-                                            done: e.target.value
-                                        }))
-                                    }}
-                                    >
-
-                                    <option value={each.done} onChange={(e) => {
-                                        e.preventDefault()
-                                    }}>{each.done}</option>
-                                    <option value={notCurrentDone(each)} onChange={(e) => {
-                                        e.preventDefault()
-                                    }}>{notCurrentDone(each)}</option>
-                                </select> */}
+                                    {/* completion button */}
                                 <button className='custom-button' style={{margin: 20}} onClick={(e) => {
                                     dispatch(update({
                                         title: each.title,
@@ -108,7 +82,6 @@ function LandingPage() {
                                         done: !each.done
                                     }))
                                     e.preventDefault()
-                                    // navigate('/')
                                     }}> {checkDone(each)} </button>
                             </Link>
                         </div>
