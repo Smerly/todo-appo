@@ -65,9 +65,9 @@ function ViewTask() {
     return (
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
-            <h1>Task Details</h1>
             
             <div className='task-box'>
+                <h1>Task Details</h1>
                 <div className='dashed-decoration'>
                     <div style={{display: 'flex', flexDirection: 'row'}}>
 
@@ -92,7 +92,7 @@ function ViewTask() {
                                 originalTitle: currentTask.title
                             }))
                             navigate('/')
-                        }} className='delete-icon'>X</button>
+                        }} className='delete-icon'></button>
                     </div>
 
                     {/* Due Date */}
@@ -112,7 +112,7 @@ function ViewTask() {
                             originalTitle: currentTask.originalTitle,
                             done: !currentTask.done
                         }))
-                        navigate('/')
+                        // navigate('/')
                     }}> {checkDone(currentTask)} </button>
 
                     {/* Priority */}

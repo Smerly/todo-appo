@@ -7,12 +7,19 @@ input, button {
     background: url(../images/arrow-pointer.png);
     position: absolute;
     background-size: contain;
+    background-position: center center;
     background-repeat: no-repeat;
-    width: 8vw;
-    height: 8vw;
+    width: 5rem;
+    height: 5rem;
     left: 5%;
     top: 6%;
-  }
+    transition: 0.2s;
+}
+
+.back-arrow:hover {
+    box-shadow: 0px 0px 10px 10px rgb(237, 243, 255);
+    background-color: rgb(237, 243, 255);
+}
 
 .radio-section {
  margin: 0px;
@@ -20,7 +27,7 @@ input, button {
 
 .input-text {
     height: 30px;
-    width: 40vw;
+    width: 30vw;
     margin: 20px;
     border-radius: 50px;
     border: 1px black solid;
@@ -41,11 +48,12 @@ input, button {
     align-items: center;
     /* min-height: 95rem; */
     height: 100%;
-    /* min-width: 50vw; */
+    width: 50vw;
     background-color: rgb(210, 225, 255);
     clip-path: polygon(0 60.00px,60.00px 0,100% 0,100% calc(100% - 60.00px),calc(100% - 60.00px) 100%,0 100%);
     /* position: relative; */
     padding: 2rem;
+    margin: 2rem;
     clear: both !important;
 }
 .dashed-decoration-new {
@@ -53,8 +61,7 @@ input, button {
     /* position: absolute; */
     padding: 3vw;
     width: 70%;
-    height: 80%;
-    resize: both;
+    /* height: 80%; */
     /* overflow: auto; */
     clear: both !important;
 }

@@ -27,15 +27,15 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
     color: black;
     text-decoration: none;
     margin-left: 2rem;
-    width: 50px;
-    height: 50px;
+    width: 43px;
+    height: 43px;
     transition: 0.3s;
     border: 0px black solid;
-    background: none;
+    background: url('../images/542724.png');
+    background-size: cover;
     cursor: pointer;
 }
 
@@ -71,7 +71,7 @@
 
 .dashed-decoration {
     border: 3px white dashed;
-    position: absolute;
+    /* position: absolute; */
     padding: 3vw;
     width: 70%;
     height: 70%;
@@ -106,12 +106,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 60rem;
-    min-width: 50vw;
+    /* min-height: 60rem; */
+    width: 50vw;
     background-color: rgb(210, 225, 255);
     clip-path: polygon(0 60.00px,60.00px 0,100% 0,100% calc(100% - 60.00px),calc(100% - 60.00px) 100%,0 100%);
     position: relative;
     padding: 2rem;
+    margin: 2rem;
 }
 
 .box-text {

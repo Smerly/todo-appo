@@ -140,7 +140,7 @@ function LandingPage() {
                         <select className="custom-select" onChange={(e) => {
                             setSort(e.target.value)
                         }}>
-                            <option value='default'>Order Created In</option>
+                            <option value='default'>Date Created</option>
                             <option value='dateLow'>Date Ascending</option>
                             <option value='dateHigh'>Date Descending</option>
                             <option value="priorityLow">Priority Ascending</option>

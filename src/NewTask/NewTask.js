@@ -52,10 +52,9 @@ function NewTask() {
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
 
-            {/* Title */}
-
-            <h1>New Task</h1>
             <div className='task-box-new'>
+                {/* Title */}
+                <h1>New Task</h1>
                 <div className='dashed-decoration-new'>
                     <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
                         <h1> Enter Task Title </h1>

@@ -81,14 +81,13 @@ function ViewTask() {
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             
             <Link to={`/`} className='back-arrow'></Link>
-
-            <h1> Edit Task </h1>
             
             {/* Title */}
 
-            <div className='task-box-new' style={{ width: '50vw' }}>
+            <div className='task-box-new'>
+                <h1> Edit Task </h1>
                 <div className='dashed-decoration-new'>
-                    <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
+                    <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20}}>
                         <h1> Task Title </h1>
                         <input className='input-text' defaultValue={currentTask.title} style={{height: 40, fontSize: 20, width: '20vw'}} type='text' onChange={(e) => setTitle(e.target.value)}/>
                         
@@ -155,7 +154,6 @@ function ViewTask() {
                                 margin: 'auto',
                                 width: 200,
                                 textAlign: 'center',
-                                marginBottom: 100,
                             }}
                             type="datetime-local"
                             onChange={(e) => {
