@@ -121,9 +121,10 @@ function NewTask() {
                             })}
                         </div>
 
-                        <input className='input-text' type='text' onChange={(e) => setEachListItem(e.target.value)}/>
+                        <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
                         <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                             e.preventDefault();
+                            setEachListItem('')
                             return setChecklist((oldArr) => [...oldArr, eachListItem])
                         }}>Enter Checklist Item</button>
 
@@ -134,12 +135,16 @@ function NewTask() {
                             <div className='tag-box'>{each}</div>
                         )
                     })}
-                        <input className='input-text' type='text'  onChange={(e) => setEachTag(e.target.value)}/>
-                        <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
-                            e.preventDefault();
-                            return setTags((oldArr) => [...oldArr, eachTag])
-                        }}>Enter Tag</button>
-                        
+                            <form style={{display: 'flex', flexDirection: 'column'}}>
+                                <input className='input-text' type='text' value={eachTag}  onChange={(e) => {
+                                    setEachTag(e.target.value)
+                                }}/>
+                                <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
+                                    e.preventDefault();
+                                    setEachTag('')
+                                    return setTags((oldArr) => [...oldArr, eachTag])
+                                }}>Enter Tag</button>
+                            </form>
                         </div>
 
                         <button className='custom-submit' type='submit' onClick={() => {

@@ -9,11 +9,19 @@ function ViewTask() {
 
     // Helper Vars
 
+    // Make done attribute user friendly
+    const checkDone = (current) => {
+        if (current.done === true) {
+            return 'done'
+        }
+        return 'pending'
+    }
+
     // Querying for the task we currently need to use
     const currentTask = tasks.filter((each) => {
         return each.title === slug
     })[0]
-
+    console.log(currentTask.dueDatex)
     const currentDate = JSON.parse(currentTask.dueDatex)
     const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -105,7 +113,7 @@ function ViewTask() {
                             done: !currentTask.done
                         }))
                         navigate('/')
-                    }}> done </button>
+                    }}> {checkDone(currentTask)} </button>
 
                     {/* Priority */}
 
