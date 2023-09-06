@@ -33,7 +33,6 @@ export const taskSlice = createSlice({
         },
         update: (currentState, action: PayloadAction<Task>) => {
             // Query the targetted task from the array of tasks by title, then change the state with the new state
-            console.log('updating..')
             const title: string = action.payload.originalTitle
             for (let i = 0; i < currentState.tasks.length; i++) {
                 if (currentState.tasks[i].title === title) {

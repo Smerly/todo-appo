@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { add } from "../redux/reducer.ts";
 import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
 
 
 function NewTask() {
+    // Query tasks
+    const tasks = useSelector((state) => state.task.tasks)
     // Initialize React useNavigate()
     const navigate = useNavigate()
 
@@ -149,10 +151,17 @@ function NewTask() {
                         {/* Submit Button */}
 
                         <button className='custom-submit' type='submit' onClick={() => {
-                        if (hasSymbolsEnd(title)) {
+                            const existedArr = tasks.filter((each) => {
+                                return each.title === title
+                            })
+                        if (existedArr.length > 0) {
+                            alert('This title already exists')
+                        } else if (hasSymbolsEnd(title)) {
                             alert('Title does not accept those characters at the end (could be a space)')
                         } else if (hasSymbols(title)) {
                             alert('Title has non-accepted symbols')
+                        } else if (title.length === 0) {
+                            alert('Title has to at least have one letter or number')
                         } else {
                             dispatch(add({
                                 title: title,
