@@ -62,6 +62,11 @@ function LandingPage() {
     // Displaying all tasks
 
     const listOfTasks = () => {
+
+        // 
+        // Display for if power button is pressed
+        // 
+
         if (power && tasks) {
             console.log(tasks)
             const copyTasks = [...tasks]
@@ -97,6 +102,11 @@ function LandingPage() {
                         </div>
             )
         }
+
+        // 
+        // Display without power button
+        // 
+
         if (tasks) {
                 return tasks.filter((input) => {
                     if (searchFilter.length === 0) {
@@ -188,9 +198,10 @@ function LandingPage() {
                 <div className='buttons-wrapper'>
                 <button onClick={() => navigate('./new-task')} className='add-button'>+</button>
                 <button onClick={() => {
-                    setPowerAnimation(!powerAnimation)
-                    return setPower(!power)
-                    
+                    if (tasks.length > 0) {
+                        setPowerAnimation(!powerAnimation)
+                        return setPower(!power)
+                    }
                     }} className={powerAnimation ? 'power-button-clicked power-button' : 'power-button'}></button>
                 </div>
                 <div className='tasks-wrapper'>
