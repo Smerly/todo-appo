@@ -201,6 +201,8 @@ function LandingPage() {
                     if (tasks.length > 0) {
                         setPowerAnimation(!powerAnimation)
                         return setPower(!power)
+                    } else {
+                        alert ('No tasks yet, can\'t use power button.')
                     }
                     }} className={powerAnimation ? 'power-button-clicked power-button' : 'power-button'}></button>
                 </div>
