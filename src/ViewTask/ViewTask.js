@@ -36,7 +36,23 @@ function ViewTask() {
                  <div className='checklist-box'>
                     {currentTask.checklist.map((each, i) => {
                         return (
-                            <div key={i} className='list-item-box'>{each}</div>
+                            <div key={i} className='list-item-box'>
+                                {each}
+                                <button className='delete-list' style={{marginLeft: 'auto'}} onClick={(e) => {
+                                    // e.preventDefault()
+                                    const updatedChecklist = currentTask.checklist.filter((each2) => each2 !== each)
+                                    dispatch(update({
+                                        title: currentTask.title,
+                                        priority: currentTask.priority,
+                                        complexity: currentTask.complexity,
+                                        dueDatex: currentDate,
+                                        checklist: updatedChecklist,
+                                        tags: currentTask.tags,
+                                        originalTitle: currentTask.originalTitle,
+                                        done: !currentTask.done
+                                    }))
+                                }}></button>
+                            </div>
                         )
                     })}
                 </div>
@@ -52,7 +68,23 @@ function ViewTask() {
                 <div className='tags-box'>
                     {currentTask.tags.map((each, i) => {
                         return (
-                            <div key={i} className='tag-box'>{each}</div>
+                            <div key={i} className='tag-box'>
+                                {each}
+                                <button className='delete-list' onClick={(e) => {
+                                    // e.preventDefault()
+                                    const updatedTag = currentTask.tags.filter((each2) => each2 !== each)
+                                    dispatch(update({
+                                        title: currentTask.title,
+                                        priority: currentTask.priority,
+                                        complexity: currentTask.complexity,
+                                        dueDatex: currentDate,
+                                        checklist: currentTask.checklist,
+                                        tags: updatedTag,
+                                        originalTitle: currentTask.originalTitle,
+                                        done: !currentTask.done
+                                    }))
+                                }}></button>
+                            </div>
                         )
                     })}
                 </div>

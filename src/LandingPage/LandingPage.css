@@ -18,15 +18,15 @@
     background-color: rgb(210, 225, 255);
     border: 0px white dashed;
     border-radius: 100px;
+    cursor: pointer;
     margin: 1rem;
     text-decoration: none;
-    transition: 0.1s;
+    transition: 0.2s;
 }
 
 .add-button:hover {
     background-color: rgb(229, 238, 255);
-    /* border: 3px rgb(255, 255, 255) dashed; */
-    box-sizing: border-box; 
+    border: 3px rgb(255, 255, 255) dashed;
 }
 
 .add-button-static {
@@ -43,6 +43,26 @@
     margin-bottom: 2.5rem;
     margin-right: 2.5rem;
     
+}
+
+.power-button { 
+    background: url('../images/power-button.png');
+    background-size: 40px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    width: 60px;
+    height: 60px;
+    background-color: rgb(210, 225, 255);
+    border: 0px white solid;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: 0.2s;
+    margin: 1rem;
+}
+
+.power-button:hover {
+    background-color: rgb(229, 238, 255);
+    border: 3px rgb(255, 255, 255) dashed;
 }
 
 .regular-texted {
@@ -103,6 +123,11 @@
     border-top: 80px solid white;
     border-left: 80px solid white;
     width: 0;
+}
+
+.buttons-wrapper {
+    display: flex;
+    flex-direction: row;
 }
 
 .custom-select {

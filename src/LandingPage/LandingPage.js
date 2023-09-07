@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import './LandingPage.css'
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react"
@@ -9,11 +9,13 @@ function LandingPage() {
     const tasks = useSelector((state) => state.task.tasks)
     // Get dispatch from Redux
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     
     // useState Vars
 
     const [searchFilter, setSearchFilter] = useState('')
     const [sort, setSort] = useState('default')
+    const [power, setPower] = useState(false)
 
     // Helper Function
 
@@ -36,6 +38,40 @@ function LandingPage() {
     // Displaying all tasks
 
     const listOfTasks = () => {
+        if (power && tasks) {
+            console.log(tasks)
+            const copyTasks = [...tasks]
+                copyTasks.sort((a, b) => {
+                    return (a.priority + a.complexity) - (b.priority + b.complexity)
+                })
+            const chosenTask = copyTasks.pop()
+            const currentDate = JSON.parse(chosenTask.dueDatex)
+            return (
+                <div>
+                            <div className='button-overlay' />
+                            <Link to={`/view-task/${chosenTask.title}`} className='task-box-each' style={{textDecoration: 'none'}}>
+                                    <h2 className='regular-texted'>{chosenTask.title}</h2>
+                                    <header className='regular-texted'>Priority Level: ({chosenTask.priority}/10)</header>
+                                    <header className='regular-texted'>Complexity Level: ({chosenTask.complexity}/10)</header>
+                                    <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
+                                    {/* completion button */}
+                                <button className='custom-button' style={{margin: 20}} onClick={(e) => {
+                                    dispatch(update({
+                                        title: chosenTask.title,
+                                        priority: chosenTask.priority,
+                                        complexity: chosenTask.complexity,
+                                        dueDatex: chosenTask.dueDatex,
+                                        checklist: chosenTask.checklist,
+                                        tags: chosenTask.tags,
+                                        originalTitle: chosenTask.originalTitle,
+                                        done: !chosenTask.done
+                                    }))
+                                    e.preventDefault()
+                                    }}> {checkDone(chosenTask)} </button>
+                            </Link>
+                        </div>
+            )
+        }
         if (tasks) {
                 return tasks.filter((input) => {
                     if (searchFilter.length === 0) {
@@ -123,7 +159,10 @@ function LandingPage() {
                         </select>
                     </form> 
                 </div>
-                <Link to={`/new-task`} className='add-button'>+</Link>
+                <div className='buttons-wrapper'>
+                <button onClick={() => navigate('./new-task')} className='add-button'>+</button>
+                <button onClick={() => setPower(!power)} className='power-button'></button>
+                </div>
                 <div className='tasks-wrapper'>
                 {/* All Tasks Displayed */}
                 

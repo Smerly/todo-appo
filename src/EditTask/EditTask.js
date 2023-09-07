@@ -24,7 +24,7 @@ function ViewTask() {
     const [title, setTitle] = useState(currentTask.title)
     const [priority, setPriority] = useState(currentTask.priority)
     const [complexity, setComplexity] = useState(currentTask.complexity)
-    const [dueDate, setDueDate] = useState(new Date(currentTask.dueDatex).getTime())
+    const [dueDate, setDueDate] = useState(new Date(JSON.parse(currentTask.dueDatex)).getTime())
 
     const [checklist, setChecklist] = useState(currentTask.checklist);
     const [eachListItem, setEachListItem] = useState('')
@@ -85,7 +85,7 @@ function ViewTask() {
             {/* Title */}
 
             <div className='task-box-new'>
-                <h1> Edit Task </h1>
+                <h1> {currentTask.title} </h1>
                 <div className='dashed-decoration-new'>
                     <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20}}>
                         <h1> Task Title </h1>
@@ -157,16 +157,17 @@ function ViewTask() {
                             }}
                             type="datetime-local"
                             onChange={(e) => {
+                                console.log(e.target.value)
                                 setDueDate(new Date(e.target.value).getTime())
                             }}
                         />
 
                         {/* Checklist */}
 
-                        <div className='checklist-box' style={{margin: 10}}>
-                            {checklist.map((each) => {
+                        {/* <div className='checklist-box' style={{margin: 10}}>
+                            {checklist.map((each, i) => {
                             return (
-                                <div className='list-item-box'>{each}</div>
+                                <div key={i} className='list-item-box'>{each}</div>
                             )
                             })}
                         </div>
@@ -175,14 +176,14 @@ function ViewTask() {
                         <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                             e.preventDefault();
                             setEachListItem('')
-                            return setChecklist((oldArr) => [...oldArr, eachListItem])
-                        }}>Enter Checklist Item</button>
+                            return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
+                        }}>Enter Checklist Item</button> */}
 
                         {/* Tags */}
-                        <div style={{marginTop: '5vw'}}></div>  
-                            {tags.map((each) => {
+                        {/* <div style={{marginTop: '5vw'}}></div>  
+                            {tags.map((each, i) => {
                             return (
-                                <div className='tag-box'>{each}</div>
+                                <div key={i} className='tag-box'>{each}</div>
                             )
                         })}
                         <form style={{display: 'flex', flexDirection: 'column'}}>
@@ -192,11 +193,59 @@ function ViewTask() {
                             <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                                 e.preventDefault();
                                 setEachTag('')
-                                return setTags((oldArr) => [...oldArr, eachTag])
+                                return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
                             }}>Enter Tag</button>
-                        </form>
+                        </form> */}
 
+                        {/* Checklist */}
+                                
+                        <div className='checklist-box' style={{margin: 10}}>
+                            {checklist.map((each) => {
+                            return (
+                                <div className='list-item-box'>
+                                    {each}
+                                    <button className='delete-list' onClick={(e) => {
+                                    e.preventDefault()
+                                    setChecklist(checklist.filter((each2) => each2 !== each ))
+                                    }}></button>
+                                </div>
+                                
+                            )
+                            })}
+                        </div>
+                        <div className='array-form'>
+                            <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
+                            <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
+                                e.preventDefault();
+                                setEachListItem('')
+                                return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
+                            }}>Enter Checklist Item</button>
+                        </div>
                         
+                        {/* Tags */}
+                        <div style={{marginTop: '5vw'}}></div>  
+                        {tags.map((each) => {
+                        return (
+                            <div className='tag-box'>
+                                {each}
+                                <button className='delete-list' onClick={(e) => {
+                                    e.preventDefault()
+                                    setTags(tags.filter((each2) => each2 !== each ))
+                                }}></button>
+                            </div>
+                        )
+                    })} 
+                            <form className='array-form'>
+                                <input className='input-text' type='text' value={eachTag}  onChange={(e) => {
+                                    setEachTag(e.target.value)
+                                }}/>
+                                <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
+                                    e.preventDefault();
+                                    setEachTag('')
+                                    return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
+                                }}>Enter Tag</button>
+                            </form>
+                            
                         </div>
 
                         {/* Submit Button */}
@@ -207,6 +256,7 @@ function ViewTask() {
                             } else if (hasSymbols(title)) {
                                 alert('Title has non-accepted symbols')
                             } else {
+                                console.log(dueDate)
                                 dispatch(update({
                                     title: title,
                                     priority: priority,
@@ -220,7 +270,7 @@ function ViewTask() {
                                 return navigate('/')
                             }
 
-                    }}>Submit</button>
+                    }}>Save</button>
                     </form>
                 </div>
             </div>

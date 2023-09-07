@@ -124,6 +124,7 @@
 }
 
 .list-item-box {
+    display: flex;
     min-width: 100px;
     width: auto;
     margin-right: auto;

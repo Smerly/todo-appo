@@ -50,6 +50,7 @@ function NewTask() {
         }
         return false
     }
+
     return (
         <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
@@ -117,33 +118,47 @@ function NewTask() {
                         <div className='checklist-box' style={{margin: 10}}>
                             {checklist.map((each) => {
                             return (
-                                <div className='list-item-box'>{each}</div>
+                                <div className='list-item-box'>
+                                    {each}
+                                    <button className='delete-list' onClick={(e) => {
+                                    e.preventDefault()
+                                    setChecklist(checklist.filter((each2) => each2 !== each ))
+                                    }}></button>
+                                </div>
+                                
                             )
                             })}
                         </div>
-
-                        <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
-                        <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
-                            e.preventDefault();
-                            setEachListItem('')
-                            return setChecklist((oldArr) => [...oldArr, eachListItem])
-                        }}>Enter Checklist Item</button>
+                        <div className='array-form'>
+                            <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
+                            <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
+                                e.preventDefault();
+                                setEachListItem('')
+                                return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
+                            }}>Enter Checklist Item</button>
+                        </div>
 
                         {/* Tags */}
                         <div style={{marginTop: '5vw'}}></div>  
                         {tags.map((each) => {
                         return (
-                            <div className='tag-box'>{each}</div>
+                            <div className='tag-box'>
+                                {each}
+                                <button className='delete-list' onClick={(e) => {
+                                    e.preventDefault()
+                                    setTags(tags.filter((each2) => each2 !== each ))
+                                }}></button>
+                            </div>
                         )
-                    })}
-                            <form style={{display: 'flex', flexDirection: 'column'}}>
+                    })} 
+                            <form className='array-form'>
                                 <input className='input-text' type='text' value={eachTag}  onChange={(e) => {
                                     setEachTag(e.target.value)
                                 }}/>
                                 <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                                     e.preventDefault();
                                     setEachTag('')
-                                    return setTags((oldArr) => [...oldArr, eachTag])
+                                    return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
                                 }}>Enter Tag</button>
                             </form>
                         </div>
@@ -175,7 +190,7 @@ function NewTask() {
                             }))
                             return navigate('/')
                         }
-                    }}>Submit</button>
+                    }}>Create Task</button>
                     </form>
                 </div>
             </div>

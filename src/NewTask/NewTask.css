@@ -27,7 +27,7 @@ input, button {
 
 .input-text {
     height: 30px;
-    width: 30vw;
+    width: 20vw;
     margin: 20px;
     border-radius: 50px;
     border: 1px black solid;
@@ -91,11 +91,7 @@ input, button {
 }
 
 .custom-submit {
-    text-shadow: -1px 1px 0 #434343,
-                          1px 1px 0 #434343,
-                         1px -1px 0 #434343,
-                        -1px -1px 0 #434343;
-    color: white;
+    color: black;
     font-size: 30px;
     width: 300px;
     margin: auto;
@@ -133,6 +129,24 @@ flex-direction: column;
     color: rgb(56, 194, 35);
     width: 2em;
     height: 2em;
+}
+
+.delete-list {
+    width: 20px;
+    height: 20px;
+    background: url('../images/542724.png');
+    background-size: cover;
+    background-position: center center;
+    border: 0px white solid;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.array-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 
 @media screen and (max-width: 620px) {
