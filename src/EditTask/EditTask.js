@@ -163,41 +163,6 @@ function ViewTask() {
                         />
 
                         {/* Checklist */}
-
-                        {/* <div className='checklist-box' style={{margin: 10}}>
-                            {checklist.map((each, i) => {
-                            return (
-                                <div key={i} className='list-item-box'>{each}</div>
-                            )
-                            })}
-                        </div>
-
-                        <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
-                        <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
-                            e.preventDefault();
-                            setEachListItem('')
-                            return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
-                        }}>Enter Checklist Item</button> */}
-
-                        {/* Tags */}
-                        {/* <div style={{marginTop: '5vw'}}></div>  
-                            {tags.map((each, i) => {
-                            return (
-                                <div key={i} className='tag-box'>{each}</div>
-                            )
-                        })}
-                        <form style={{display: 'flex', flexDirection: 'column'}}>
-                            <input className='input-text' type='text' value={eachTag}  onChange={(e) => {
-                                setEachTag(e.target.value)
-                            }}/>
-                            <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
-                                e.preventDefault();
-                                setEachTag('')
-                                return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
-                            }}>Enter Tag</button>
-                        </form> */}
-
-                        {/* Checklist */}
                                 
                         <div className='checklist-box' style={{margin: 10}}>
                             {checklist.map((each) => {
@@ -213,14 +178,14 @@ function ViewTask() {
                             )
                             })}
                         </div>
-                        <div className='array-form'>
+                        <form className='array-form'>
                             <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
                             <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
                                 e.preventDefault();
                                 setEachListItem('')
                                 return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
                             }}>Enter Checklist Item</button>
-                        </div>
+                        </form>
                         
                         {/* Tags */}
                         <div style={{marginTop: '5vw'}}></div>  

@@ -129,14 +129,14 @@ function NewTask() {
                             )
                             })}
                         </div>
-                        <div className='array-form'>
+                        <form className='array-form'>
                             <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
                             <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
                                 e.preventDefault();
                                 setEachListItem('')
                                 return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
                             }}>Enter Checklist Item</button>
-                        </div>
+                        </form>
 
                         {/* Tags */}
                         <div style={{marginTop: '5vw'}}></div>  

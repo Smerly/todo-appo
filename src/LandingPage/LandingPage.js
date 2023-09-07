@@ -38,7 +38,9 @@ function LandingPage() {
     }
 
     const checkIfTimeNear = (targetTime) => {
-        if (targetTime - currentTime <= 259200000) {
+        if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000) {
+            return 'today task-box-each'
+        } else if (targetTime - currentTime <= 259200000) {
             return 'three-day task-box-each'
         } else {
             return 'task-box-each'

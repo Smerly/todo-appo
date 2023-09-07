@@ -153,6 +153,16 @@
     animation: blinker 1.3s linear infinite;
 }
 
+.today {
+    background-color: rgb(255, 157, 157);
+    animation: faster 1s linear infinite;
+}
+
+.today:hover {
+    clip-path: polygon(0 0.00px,0.00px 0,100% 0,100% calc(100% - 0.00px),calc(100% - 0.00px) 100%,0 100%);
+    background-color: red;
+}
+
 .exclamation {
     position: absolute;
     background: url('../images/exclamation.png');
@@ -166,5 +176,11 @@
 @keyframes blinker {
     50% {
       opacity: 50%;
+    }
+  }
+
+@keyframes faster {
+    50% {
+      opacity: 40%;
     }
   }
