@@ -3,6 +3,7 @@ import './LandingPage.css'
 import { useSelector, useDispatch } from "react-redux"
 import { useState } from "react"
 import { update } from "../redux/reducer.ts"
+import { current } from "@reduxjs/toolkit"
 
 function LandingPage() {
     // Query all tasks from Redux store
@@ -16,6 +17,8 @@ function LandingPage() {
     const [searchFilter, setSearchFilter] = useState('')
     const [sort, setSort] = useState('default')
     const [power, setPower] = useState(false)
+    const [powerAnimation, setPowerAnimation] = useState(false)
+    const [currentTime, setCurrentTime] = useState(new Date().getTime())
 
     // Helper Function
 
@@ -33,6 +36,25 @@ function LandingPage() {
         }
         return 'done'
     }
+
+    const checkIfTimeNear = (targetTime) => {
+        if (targetTime - currentTime <= 259200000) {
+            return 'three-day task-box-each'
+        } else {
+            return 'task-box-each'
+        }
+    }
+    
+    const handleExclamation = (targetTime) => {
+        if (targetTime - currentTime <= 259200000) {
+            return 'exclamation'
+        }
+        return ''
+    }
+
+    // const powerButtonRotate = () => {
+    //     document.getElementById('img').className = 'power-button-click'
+    // }
          
 
     // Displaying all tasks
@@ -49,7 +71,8 @@ function LandingPage() {
             return (
                 <div>
                             <div className='button-overlay' />
-                            <Link to={`/view-task/${chosenTask.title}`} className='task-box-each' style={{textDecoration: 'none'}}>
+                            <Link to={`/view-task/${chosenTask.title}`} className={checkIfTimeNear(currentDate)} style={{textDecoration: 'none'}}>
+                            <div className={handleExclamation(currentDate)}></div>
                                     <h2 className='regular-texted'>{chosenTask.title}</h2>
                                     <header className='regular-texted'>Priority Level: ({chosenTask.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({chosenTask.complexity}/10)</header>
@@ -100,25 +123,26 @@ function LandingPage() {
                     return (
                         <div key={i}>
                             <div className='button-overlay' />
-                            <Link to={`/view-task/${each.title}`} className='task-box-each' style={{textDecoration: 'none'}}>
+                            <Link to={`/view-task/${each.title}`} className={checkIfTimeNear(currentDate)} style={{textDecoration: 'none'}}>
+                                <div className={handleExclamation(currentDate)}></div>
                                     <h2 className='regular-texted'>{each.title}</h2>
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
                                     <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
                                     {/* completion button */}
-                                <button className='custom-button' style={{margin: 20}} onClick={(e) => {
-                                    dispatch(update({
-                                        title: each.title,
-                                        priority: each.priority,
-                                        complexity: each.complexity,
-                                        dueDatex: each.dueDatex,
-                                        checklist: each.checklist,
-                                        tags: each.tags,
-                                        originalTitle: each.originalTitle,
-                                        done: !each.done
-                                    }))
-                                    e.preventDefault()
-                                    }}> {checkDone(each)} </button>
+                                    <button className='custom-button' style={{margin: 20}} onClick={(e) => {
+                                        dispatch(update({
+                                            title: each.title,
+                                            priority: each.priority,
+                                            complexity: each.complexity,
+                                            dueDatex: each.dueDatex,
+                                            checklist: each.checklist,
+                                            tags: each.tags,
+                                            originalTitle: each.originalTitle,
+                                            done: !each.done
+                                        }))
+                                        e.preventDefault()
+                                        }}> {checkDone(each)} </button>
                             </Link>
                         </div>
                     )
@@ -161,7 +185,11 @@ function LandingPage() {
                 </div>
                 <div className='buttons-wrapper'>
                 <button onClick={() => navigate('./new-task')} className='add-button'>+</button>
-                <button onClick={() => setPower(!power)} className='power-button'></button>
+                <button onClick={() => {
+                    setPowerAnimation(!powerAnimation)
+                    return setPower(!power)
+                    
+                    }} className={powerAnimation ? 'power-button-clicked power-button' : 'power-button'}></button>
                 </div>
                 <div className='tasks-wrapper'>
                 {/* All Tasks Displayed */}

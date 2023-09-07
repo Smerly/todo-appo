@@ -65,6 +65,10 @@
     border: 3px rgb(255, 255, 255) dashed;
 }
 
+.power-button-clicked {
+    transform: rotate(180deg);
+}
+
 .regular-texted {
     text-decoration: none;
     color: black;
@@ -144,3 +148,23 @@
     background-color: rgb(210, 225, 255);
     border: 0px;
 }
+
+.three-day {
+    animation: blinker 1.3s linear infinite;
+}
+
+.exclamation {
+    position: absolute;
+    background: url('../images/exclamation.png');
+    background-size: cover;
+    width: 50px;
+    height: 116px;
+    opacity: 40%;
+    left: 70%;
+}
+
+@keyframes blinker {
+    50% {
+      opacity: 50%;
+    }
+  }
