@@ -49,7 +49,7 @@ function ViewTask() {
                                         checklist: updatedChecklist,
                                         tags: currentTask.tags,
                                         originalTitle: currentTask.originalTitle,
-                                        done: !currentTask.done
+                                        done: currentTask.done
                                     }))
                                 }}></button>
                             </div>
@@ -81,7 +81,7 @@ function ViewTask() {
                                         checklist: currentTask.checklist,
                                         tags: updatedTag,
                                         originalTitle: currentTask.originalTitle,
-                                        done: !currentTask.done
+                                        done: currentTask.done
                                     }))
                                 }}></button>
                             </div>
