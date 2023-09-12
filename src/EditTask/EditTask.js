@@ -16,6 +16,19 @@ function ViewTask() {
         return each.title === slug
     })[0]
 
+    const getChecklistIdPlace = () => {
+        if (currentTask.checklist.length > 0) {
+            return currentTask.checklist[currentTask.checklist.length - 1].id
+        }
+        return 0
+    }
+    const getTagIdPlace = () => {
+        if (currentTask.tags.length > 0 ) {
+            return currentTask.tags[currentTask.tags.length - 1].id
+        }
+        return 0
+    }
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -30,6 +43,9 @@ function ViewTask() {
     const [eachListItem, setEachListItem] = useState('')
     const [tags, setTags] = useState(currentTask.tags)
     const [eachTag, setEachTag] = useState('')
+
+    const [checklistIdCount, setChecklistIdCounter] = useState(getChecklistIdPlace() + 1)
+    const [tagIdCount, setTagIdCount] = useState(getTagIdPlace() + 1)
 
     // Helper functions
 
@@ -157,21 +173,20 @@ function ViewTask() {
                             }}
                             type="datetime-local"
                             onChange={(e) => {
-                                console.log(e.target.value)
                                 setDueDate(new Date(e.target.value).getTime())
                             }}
                         />
-
                         {/* Checklist */}
                                 
                         <div className='checklist-box' style={{margin: 10}}>
+                            
                             {checklist.map((each) => {
                             return (
                                 <div className='list-item-box'>
-                                    {each}
+                                    {each.name}
                                     <button className='delete-list' onClick={(e) => {
                                     e.preventDefault()
-                                    setChecklist(checklist.filter((each2) => each2 !== each ))
+                                    setChecklist(checklist.filter((each2) => each2.id !== each.id ))
                                     }}></button>
                                 </div>
                                 
@@ -183,7 +198,18 @@ function ViewTask() {
                             <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
                                 e.preventDefault();
                                 setEachListItem('')
-                                return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
+                                return setChecklist((oldArr) => {
+                                    const eachName = eachListItem.split(',')
+                                    let tempArr = []
+                                    const generatedId = () => {
+                                        setChecklistIdCounter(checklistIdCount + 1)
+                                        return checklistIdCount + tempArr.length / 100000
+                                    }
+                                        for (let i = 0; i < eachName.length; i++) {
+                                            tempArr.push({id: generatedId(), name: eachName[i], done: false})
+                                        }
+                                        return [...oldArr, ...tempArr]  
+                                })
                             }}>Enter Checklist Item</button>
                         </form>
                         
@@ -192,10 +218,10 @@ function ViewTask() {
                         {tags.map((each) => {
                         return (
                             <div className='tag-box'>
-                                {each}
+                                {each.name}
                                 <button className='delete-list' onClick={(e) => {
                                     e.preventDefault()
-                                    setTags(tags.filter((each2) => each2 !== each ))
+                                    setTags(tags.filter((each2) => each2.id !== each.id ))
                                 }}></button>
                             </div>
                         )
@@ -207,7 +233,18 @@ function ViewTask() {
                                 <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                                     e.preventDefault();
                                     setEachTag('')
-                                    return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
+                                    return setTags((oldArr) => { 
+                                        const eachName = eachTag.split(',')
+                                        const generatedId = () => {
+                                            setTagIdCount(tagIdCount + 1)
+                                            return tagIdCount + tempArr.length / 100000
+                                        }
+                                        let tempArr = []
+                                            for (let i = 0; i < eachName.length; i++) {
+                                                tempArr.push({id: generatedId(), name: eachName[i]})
+                                            }
+                                            return [...oldArr, ...tempArr]  
+                                    })
                                 }}>Enter Tag</button>
                             </form>
                             
@@ -221,7 +258,6 @@ function ViewTask() {
                             } else if (hasSymbols(title)) {
                                 alert('Title has non-accepted symbols')
                             } else {
-                                console.log(dueDate)
                                 dispatch(update({
                                     title: title,
                                     priority: priority,

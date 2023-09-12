@@ -23,6 +23,9 @@ function NewTask() {
     const [tags, setTags] = useState([])
     const [eachTag, setEachTag] = useState('')
 
+    const [checklistIdCount, setChecklistIdCounter] = useState(0)
+    const [tagIdCount, setTagIdCount] = useState(0)
+
     // Initialize Redux
     const dispatch = useDispatch()
     
@@ -119,10 +122,10 @@ function NewTask() {
                             {checklist.map((each) => {
                             return (
                                 <div className='list-item-box'>
-                                    {each}
+                                    {each.name}
                                     <button className='delete-list' onClick={(e) => {
                                     e.preventDefault()
-                                    setChecklist(checklist.filter((each2) => each2 !== each ))
+                                    setChecklist(checklist.filter((each2) => each2.id !== each.id ))
                                     }}></button>
                                 </div>
                                 
@@ -134,19 +137,32 @@ function NewTask() {
                             <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
                                 e.preventDefault();
                                 setEachListItem('')
-                                return setChecklist((oldArr) => [...oldArr, ...eachListItem.split(',')])
+                                return setChecklist((oldArr) => { 
+                                    const eachName = eachListItem.split(',')
+                                    let tempArr = []
+                                    const generatedId = () => {
+                                        setChecklistIdCounter(checklistIdCount + 1)
+                                        return checklistIdCount + tempArr.length / 100000
+                                    }
+                                        for (let i = 0; i < eachName.length; i++) {
+
+                                            tempArr.push({id: generatedId(), name: eachName[i], done: false})
+                                        }
+                                        return [...oldArr, ...tempArr]  
+                                })
                             }}>Enter Checklist Item</button>
                         </form>
 
                         {/* Tags */}
+
                         <div style={{marginTop: '5vw'}}></div>  
                         {tags.map((each) => {
                         return (
                             <div className='tag-box'>
-                                {each}
+                                {each.name}
                                 <button className='delete-list' onClick={(e) => {
                                     e.preventDefault()
-                                    setTags(tags.filter((each2) => each2 !== each ))
+                                    setTags(tags.filter((each2) => each2.id !== each.id ))
                                 }}></button>
                             </div>
                         )
@@ -158,7 +174,19 @@ function NewTask() {
                                 <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
                                     e.preventDefault();
                                     setEachTag('')
-                                    return setTags((oldArr) => [...oldArr, ...eachTag.split(',')])
+                                    const tempArr = []
+                                    return setTags((oldArr) => { 
+                                    const eachName = eachTag.split(',')
+                                    const generatedId = () => {
+                                        setTagIdCount(tagIdCount + 1)
+                                        return tagIdCount + tempArr.length / 100000
+                                    }
+                                    let tempArr = []
+                                        for (let i = 0; i < eachName.length; i++) {
+                                            tempArr.push({id: generatedId(), name: eachName[i]})
+                                        }
+                                        return [...oldArr, ...tempArr]  
+                                })
                                 }}>Enter Tag</button>
                             </form>
                         </div>

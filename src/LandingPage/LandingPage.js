@@ -16,11 +16,55 @@ function LandingPage() {
 
     const [searchFilter, setSearchFilter] = useState('')
     const [sort, setSort] = useState('default')
+    const [sortTag, setSortTag] = useState('')
     const [power, setPower] = useState(false)
     const [powerAnimation, setPowerAnimation] = useState(false)
     const [currentTime, setCurrentTime] = useState(new Date().getTime())
 
-    // Helper Function
+    // Helper Functions
+
+    // Querying for all tags that exists (leaving out duplicates)
+    const getAllTags = () => {
+        const tempArr = []
+        for (let i = 0; i < tasks.length; i++) {
+            for (let j = 0; j < tasks[i].tags.length; j++) {
+                if (!tempArr.includes(tasks[i].tags[j].name)) {
+                    tempArr.push(tasks[i].tags[j].name)
+                }
+            }
+        }
+        return tempArr
+    }
+
+    // Generating the progress bar with math and returning it
+    const generateProgressBar = (task) => {
+        let width = ''
+        let completedListings = task.checklist.filter((eachIn) => eachIn.done === true)
+        if (completedListings.length === 0) {
+            width = '0%'
+        } else {
+            const percentage = completedListings.length / task.checklist.length
+            width = `${Math.floor(percentage * 100)}%`
+        }
+        // 3
+        return (
+            <div>
+                <div className={width === '0%' ? 'progress-bar-margined progress-bar' : 'progress-bar'} style={{width: width, height: 10, marginTop: 10}}>
+                    <h2 className='progress-text'>{task.checklist.length > 0 ? String(width) : '0%'}</h2>
+                </div>
+            </div>
+        )
+    }
+
+    // Check if task has tag for filter
+    const tagsHas = (input, target) => {
+        for (let i = 0; i < input.tags.length; i++) {
+            if (input.tags[i].name === target) {
+                return true
+            }
+        }
+        return false
+    }
 
     // Make done attribute user friendly
     const checkDone = (current) => {
@@ -30,13 +74,7 @@ function LandingPage() {
         return 'pending'
     }
 
-    const notCurrentDone = (each) => {
-        if (each.done === 'done') {
-            return 'pending'
-        }
-        return 'done'
-    }
-
+    // If the date of each task is the same day, display red warning, if its within 3 days, display basic warning.
     const checkIfTimeNear = (targetTime) => {
         if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000) {
             return 'today task-box-each'
@@ -47,17 +85,13 @@ function LandingPage() {
         }
     }
     
+    // If the date is near, make exclamation
     const handleExclamation = (targetTime) => {
         if (targetTime - currentTime <= 259200000) {
             return 'exclamation'
         }
         return ''
-    }
-
-    // const powerButtonRotate = () => {
-    //     document.getElementById('img').className = 'power-button-click'
-    // }
-         
+    }       
 
     // Displaying all tasks
 
@@ -68,12 +102,14 @@ function LandingPage() {
         // 
 
         if (power && tasks) {
-            console.log(tasks)
             const copyTasks = [...tasks]
                 copyTasks.sort((a, b) => {
                     return (a.priority + a.complexity) - (b.priority + b.complexity)
                 })
             const chosenTask = copyTasks.pop()
+            let completedListings = chosenTask.checklist.filter((eachIn) => eachIn.done === true)
+            const percentage = completedListings.length / chosenTask.checklist.length
+            const width = `${Math.floor(percentage * 100)}%`
             const currentDate = JSON.parse(chosenTask.dueDatex)
             return (
                 <div>
@@ -84,8 +120,9 @@ function LandingPage() {
                                     <header className='regular-texted'>Priority Level: ({chosenTask.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({chosenTask.complexity}/10)</header>
                                     <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
+                                    {generateProgressBar(chosenTask)}
                                     {/* completion button */}
-                                <button className='custom-button' style={{margin: 20}} onClick={(e) => {
+                                <button className='custom-button' style={{margin: 0, marginTop: 10}} onClick={(e) => {
                                     dispatch(update({
                                         title: chosenTask.title,
                                         priority: chosenTask.priority,
@@ -108,13 +145,29 @@ function LandingPage() {
         // 
 
         if (tasks) {
+
+            // Filter for search filter
+
                 return tasks.filter((input) => {
                     if (searchFilter.length === 0) {
                         return input
                     } else if (input.title.includes(searchFilter)) {
                         return input
                     }   
+                }).filter((input) => {
+                    
+            // Filter for tag
+
+                    if (sortTag === '') {
+                        return input
+                    }
+                    if (tagsHas(input, sortTag)) {
+                        return input
+                    }
                 }).sort((a, b) => {
+
+            // Filter by Date, Priority, and Complexity
+
                     if (sort === 'default') {
                         return
                     } else if (sort === 'dateLow') {
@@ -131,7 +184,13 @@ function LandingPage() {
                         return b.complexity - a.complexity
                     }
                 }).map((each, i) => {
+
+                    // Render each task
+
                     const currentDate = JSON.parse(each.dueDatex)
+                    let completedListings = each.checklist.filter((eachIn) => eachIn.done === true)
+                    const percentage = completedListings.length / each.checklist.length
+                    const width = `${Math.floor(percentage * 100)}%`
                     return (
                         <div key={i}>
                             <div className='button-overlay' />
@@ -141,8 +200,9 @@ function LandingPage() {
                                     <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
                                     <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
                                     <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
+                                    {generateProgressBar(each)}
                                     {/* completion button */}
-                                    <button className='custom-button' style={{margin: 20}} onClick={(e) => {
+                                    <button className='custom-button' style={{margin: 0, marginTop: 10}} onClick={(e) => {
                                         dispatch(update({
                                             title: each.title,
                                             priority: each.priority,
@@ -176,27 +236,48 @@ function LandingPage() {
                 {/* Search Filter */}
 
                 <input type='text' className='input-text' onChange={(e) => setSearchFilter(e.target.value)} placeholder="Search.."/>
-                <div>
+                <h2 style={{textAlign: 'center'}}> Sort By Attribute or Tag </h2>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <div style={{margin: 20, marginRight: 30}}>
 
-                    {/* Sorter Options */}
+                        {/* Sorter Options */}
 
-                    <h2 style={{textAlign: 'center'}}> Sort By.. </h2>
-                    <form>
-                        <select className="custom-select" onChange={(e) => {
-                            setSort(e.target.value)
-                        }}>
-                            <option value='default'>Date Created</option>
-                            <option value='dateLow'>Date Ascending</option>
-                            <option value='dateHigh'>Date Descending</option>
-                            <option value="priorityLow">Priority Ascending</option>
-                            <option value='priorityHigh'>Priority Descending</option>
-                            <option value='complexityLow'>Complexity Ascending</option>
-                            <option value='complexityHigh'>Complexity Ascending</option>
-                        </select>
-                    </form> 
+                        <form>
+                            <select className="custom-select" onChange={(e) => {
+                                setSort(e.target.value)
+                            }}>
+                                <option value='default'>Date Created</option>
+                                <option value='dateLow'>Date Ascending</option>
+                                <option value='dateHigh'>Date Descending</option>
+                                <option value="priorityLow">Priority Ascending</option>
+                                <option value='priorityHigh'>Priority Descending</option>
+                                <option value='complexityLow'>Complexity Ascending</option>
+                                <option value='complexityHigh'>Complexity Ascending</option>
+                            </select>
+                        </form> 
+                    </div>
+
+                    {/* Tag Filter Dropdown */}
+
+                    <div style={{margin: 20}}>
+                        <form>
+                            <select className="custom-select" onChange={(e) => {    
+                                setSortTag(e.target.value)
+                            }}>
+                                <option value=''> No Tag </option>
+                                {getAllTags().map((each) => {
+                                    return (
+                                        <option value={each}> {each} </option>    
+                                    )
+                                })}
+                                </select>
+                        </form> 
+                    </div>
                 </div>
                 <div className='buttons-wrapper'>
+                {/* Add Task Button */}
                 <button onClick={() => navigate('./new-task')} className='add-button'>+</button>
+                {/* Power Button */}
                 <button onClick={() => {
                     if (tasks.length > 0) {
                         setPowerAnimation(!powerAnimation)
@@ -207,7 +288,7 @@ function LandingPage() {
                     }} className={powerAnimation ? 'power-button-clicked power-button' : 'power-button'}></button>
                 </div>
                 <div className='tasks-wrapper'>
-                {/* All Tasks Displayed */}
+                {/* Render All Tasks */}
                 
                 {listOfTasks()}
             </div>

@@ -67,6 +67,11 @@
 
 .power-button-clicked {
     transform: rotate(180deg);
+    background-color: rgb(255, 157, 157);
+}
+
+.power-button-clicked:hover {
+    background-color: rgb(255, 134, 134)
 }
 
 .regular-texted {
@@ -132,6 +137,10 @@
 .buttons-wrapper {
     display: flex;
     flex-direction: row;
+}
+
+.progress-bar-margined {
+    margin: 15px;
 }
 
 .custom-select {

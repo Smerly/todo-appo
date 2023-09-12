@@ -1,12 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface ChecklistItems {
+    id: Number,
+    name: string,
+    done: boolean
+}
+
+interface Tag {
+    id: Number,
+    name: string
+}
 interface Task {
     title: string;
     priority: Number,
     complexity: Number,
     dueDatex: Number,
-    checklist: Array<string>,
-    tags: Array<string>,
+    checklist: Array<ChecklistItems>,
+    tags: Array<Tag>,
     originalTitle: string,
     done: boolean
 }
@@ -29,7 +39,7 @@ export const taskSlice = createSlice({
         // ex: action's attribute payload (action.payload) might have new data to replace the currentState's
         add: (currentState, action: PayloadAction<Task>) => {
             // replace current information with new information
-            currentState.tasks = [...currentState.tasks, action.payload]    
+            currentState.tasks = [...currentState.tasks, action.payload]   
         },
         update: (currentState, action: PayloadAction<Task>) => {
             // Query the targetted task from the array of tasks by title, then change the state with the new state
@@ -50,8 +60,7 @@ export const taskSlice = createSlice({
             }
             
         }
-    }
-})
+}})
 
 export const { add, update, remove } = taskSlice.actions
 

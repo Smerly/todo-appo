@@ -17,10 +17,33 @@ function ViewTask() {
         return 'pending'
     }
 
+    // Helper Functions
+    
+    // Generate progress bar with math and render it
+    const generateProgressBar = () => {
+        let width = ''
+        let completedListings = currentTask.checklist.filter((eachIn) => eachIn.done === true)
+        if (completedListings.length === 0) {
+            width = '0%'
+        } else {
+            const percentage = completedListings.length / currentTask.checklist.length
+            width = `${Math.floor(percentage * 100)}%`
+        }
+        // 3
+        return (
+            <div>
+                <div className='progress-bar' style={{width: width}}>
+                    <h2 className='progress-text'>{currentTask.checklist.length > 0 ? String(width) : '0%'}</h2>
+                </div>
+            </div>
+        )
+    }
+
     // Querying for the task we currently need to use
     const currentTask = tasks.filter((each) => {
         return each.title === slug
     })[0]
+
     const currentDate = JSON.parse(currentTask.dueDatex)
     const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
@@ -36,11 +59,30 @@ function ViewTask() {
                  <div className='checklist-box'>
                     {currentTask.checklist.map((each, i) => {
                         return (
-                            <div key={i} className='list-item-box'>
-                                {each}
-                                <button className='delete-list' style={{marginLeft: 'auto'}} onClick={(e) => {
-                                    // e.preventDefault()
-                                    const updatedChecklist = currentTask.checklist.filter((each2) => each2 !== each)
+                            <div key={i} className={ each.done ? 'crossed-out list-item-box' : 'list-item-box'}>
+                                {each.name}
+                                <button className={ each.done ? 'undo done-list' : 'done-list'} style={{marginLeft: 'auto'}} onClick={(e) => {
+                                    let updatedChecklist = {}
+                                    for (let i = 0; i < currentTask.checklist.length; i++) {
+                                        if (each.id === currentTask.checklist[i].id) {
+                                            updatedChecklist = [...currentTask.checklist]
+                                            updatedChecklist[i] = {id: each.id, name: each.name, done: !each.done}
+                                        }
+                                    }
+                                    dispatch(update({
+                                        title: currentTask.title,
+                                        priority: currentTask.priority,
+                                        complexity: currentTask.complexity,
+                                        dueDatex: currentDate,
+                                        checklist: updatedChecklist,
+                                        tags: currentTask.tags,
+                                        originalTitle: currentTask.originalTitle,
+                                        done: currentTask.done
+                                    }))
+                                }}></button>
+                                <button className='delete-list' onClick={(e) => {
+                                    // Delete checklist item
+                                    const updatedChecklist = currentTask.checklist.filter((eachIn) => eachIn.id !== each.id)
                                     dispatch(update({
                                         title: currentTask.title,
                                         priority: currentTask.priority,
@@ -69,10 +111,10 @@ function ViewTask() {
                     {currentTask.tags.map((each, i) => {
                         return (
                             <div key={i} className='tag-box'>
-                                {each}
+                                {each.name}
                                 <button className='delete-list' onClick={(e) => {
                                     // e.preventDefault()
-                                    const updatedTag = currentTask.tags.filter((each2) => each2 !== each)
+                                    const updatedTag = currentTask.tags.filter((each2) => each2.id !== each.id)
                                     dispatch(update({
                                         title: currentTask.title,
                                         priority: currentTask.priority,
@@ -93,6 +135,7 @@ function ViewTask() {
             return <header> No Tags Yet.</header>
         }
     }
+    
     return (
         <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
             <Link to={`/`} className='back-arrow'></Link>
@@ -118,7 +161,7 @@ function ViewTask() {
                                 priority: currentTask.priority,
                                 complexity: currentTask.complexity,
                                 dueDatex: Number(currentDate),
-                                checklist: currentTask.checklist,
+                                checklist: {name: currentTask.checklist, done: currentTask.done},
                                 tags: currentTask.tags,
                                 originalTitle: currentTask.title
                             }))
@@ -158,6 +201,8 @@ function ViewTask() {
 
                     <h3>Checklist:</h3>
                     {checklistExists()}
+                    <h2>Progress</h2>
+                    <div style={{marginLeft: 50}}>{generateProgressBar()}</div>
 
                     {/* Tags */}
 

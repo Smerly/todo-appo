@@ -39,6 +39,23 @@
     cursor: pointer;
 }
 
+.done-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    text-decoration: none;
+    margin-left: 2rem;
+    width: 35px;
+    height: 35px;
+    transition: 0.3s;
+    border: 0px black solid;
+    background: url('../images/checkmark-png-5.png');
+    background-size: cover;
+    cursor: pointer;
+}
+
 .delete-icon:hover {
     box-shadow: 0px 0px 10px 10px white;
     background-color: white;
@@ -132,4 +149,31 @@
     border: 0px white solid;
     font-size: 20px;
     border-bottom: 2px rgb(98, 98, 98) dashed;
+}
+
+.crossed-out {
+    text-decoration: line-through;
+}
+
+.undo {
+    background-image: url('../images/1374602-200.png');
+    z-index: 10;
+}
+
+/* Progress Bar */
+
+.progress-bar {
+    height: 70px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* margin: 20px; */
+}
+
+.progress-text {
+    margin: 10px;
+    margin-left: 30px;
 }
