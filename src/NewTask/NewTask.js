@@ -5,6 +5,11 @@ import { useNavigate, Link } from "react-router-dom";
 import './NewTask.css'
 
 
+// Helper Vars
+const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
+const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
 function NewTask() {
     // Query tasks
     const tasks = useSelector((state) => state.task.tasks)
@@ -29,12 +34,9 @@ function NewTask() {
     // Initialize Redux
     const dispatch = useDispatch()
     
-    // Helper Vars
-    const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
-    const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
-    const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     // Helper Methods
     const hasSymbols = (letitle) => {
+        // For every character in string, if there are symbols, then throw error
         for (let i = 0; i < letitle.length; i++) {
             if (symbols.includes(letitle[i])) {
                 return true
@@ -44,38 +46,83 @@ function NewTask() {
     }
 
     const hasSymbolsEnd = (letitle) => {
-        for (let i = letitle.length-1; i > 0; i--) {
-            if (symbolsEnd.includes(letitle[i])) {
-                return true
-            } else {
-                return false
-            }
+        if (symbolsEnd.includes(letitle[letitle.length - 1])) {
+            return true
         }
         return false
     }
 
-    return (
-        <div className='new-task-wrapper' style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-            <Link to={`/`} className='back-arrow'></Link>
+    const generatedId = (counter, arr, type) => {
+        const tempArr = arr
+        if (type === 'tag') {
+            setTagIdCount(counter + 1)
+        } else if (type === 'checklist') {
+            setChecklistIdCounter(counter + 1)
+        }
+        return counter + tempArr.length / 100000
+    }
 
+    const addChecklistItem = (oldArr, item) => {
+        const eachName = item.split(',')
+        let tempArr = []
+        const newArr = eachName.map((each) => {
+            tempArr.push('counted')
+            return {id: generatedId(checklistIdCount, tempArr, 'checklist'), name: each, done: false}
+        })
+        return [...oldArr, ...newArr]  
+    }
+
+    const addTag = (oldArr, tag) => {
+        const eachName = tag.split(',')
+        let tempArr = []
+        const newArr = eachName.map((each) => {
+            tempArr.push('counted')
+            return {id: generatedId(tagIdCount, tempArr, 'tag'), name: each}
+        })
+        return [...oldArr, ...newArr]  
+    }
+
+    const handleSubmit = () => {
+        const existedArr = tasks.filter((each) => {
+            return each.title === title
+        })
+        if (existedArr.length > 0) {
+            alert('This title already exists')
+            return false
+        } else if (hasSymbolsEnd(title)) {
+            alert('Title does not accept those characters at the end (could be a space)')
+            return false
+        } else if (hasSymbols(title)) {
+            alert('Title has non-accepted symbols')
+            return false
+        } else if (title.length === 0) {
+            alert('Title has to at least have one letter or number')
+            return false
+        } else {
+            return true
+        }
+    }
+
+    // Render
+    
+    return (
+        <div className='new-task-wrapper'>
+            <Link to={`/`} className='back-arrow'></Link>
             <div className='task-box-new'>
                 {/* Title */}
                 <h1>New Task</h1>
                 <div className='dashed-decoration-new'>
-                    <form style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 20, marginBottom: 100}}>
+                    <form className="new-task-form">
                         <h1> Enter Task Title </h1>
-                        <input className='input-text' style={{height: 40, fontSize: 20, width: '20vw'}} type='text' placeholder='title' onChange={(e) => setTitle(e.target.value)}/>
-                        
+                        <input className='title-input input-text' type='text' placeholder='title' onChange={(e) => setTitle(e.target.value)}/>
                         <div className='radio-section'>
-
-                        {/* Priority */}
-
-                        <h1>How Much Priority Will This Task Take?</h1>
+                            {/* Priority */}
+                            <h1>How Much Priority Will This Task Take?</h1>
                             <div className='radio-buttons'>
-                            {optionsArr.map((each, i) => {
+                            {optionsArr.map((each) => {
                                 return (
-                                    <div key={i} className='radio-div'>
-                                        <label style={{textAlign: 'center'}}>{each}</label>
+                                    <div key={each.id} className='radio-div'>
+                                        <label className='radio-label'>{each}</label>
                                         <input className='radio-button' name='priority' type='radio' value={each} onChange={(e) => setPriority(each)}/>
                                     </div>
                                 )
@@ -87,10 +134,10 @@ function NewTask() {
                             <h1>How Complex is your Task?</h1>
                             <div className='radio-buttons'>
                             
-                            {optionsArr.map((each, i) => {
+                            {optionsArr.map((each) => {
                                 return (
-                                    <div key={i} className='radio-div'>
-                                        <label style={{textAlign: 'center'}}>{each}</label>
+                                    <div key={each.id} className='radio-div'>
+                                        <label className="radio-label">{each}</label>
                                         <input className='radio-button' name='complexity' type='radio' value={each} onChange={(e) => setComplexity(each)}/>
                                     </div>  
                                 )
@@ -101,91 +148,67 @@ function NewTask() {
                         {/* Due Date */}
                         
                         <h1> Due Date </h1>
-                        <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <input
-                            className='input-text'
-                            style={{
-                                margin: 'auto',
-                                width: 200,
-                                textAlign: 'center',
-                                marginBottom: 100
-                            }}
-                            type="datetime-local"
-                            onChange={(e) => {
-                                setDueDate(new Date(e.target.value).getTime())
-                            }}
-                        />
+                        <div className='date-items-box'>
+                            <input
+                                className='date-input input-text'
+                                type="datetime-local"
+                                onChange={(e) => {
+                                    setDueDate(new Date(e.target.value).getTime())
+                                }}
+                            />
 
-                        {/* Checklist */}
-                        
-                        <div className='checklist-box' style={{margin: 10}}>
-                            {checklist.map((each) => {
-                            return (
-                                <div className='list-item-box'>
-                                    {each.name}
-                                    <button className='delete-list' onClick={(e) => {
-                                    e.preventDefault()
-                                    setChecklist(checklist.filter((each2) => each2.id !== each.id ))
-                                    }}></button>
-                                </div>
-                                
-                            )
-                            })}
-                        </div>
-                        <form className='array-form'>
-                            <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
-                            <button className='custom-button' style={{marginBottom: 20}} onClick={(e) => {
-                                e.preventDefault();
-                                setEachListItem('')
-                                return setChecklist((oldArr) => { 
-                                    const eachName = eachListItem.split(',')
-                                    let tempArr = []
-                                    const generatedId = () => {
-                                        setChecklistIdCounter(checklistIdCount + 1)
-                                        return checklistIdCount + tempArr.length / 100000
-                                    }
-                                        for (let i = 0; i < eachName.length; i++) {
-
-                                            tempArr.push({id: generatedId(), name: eachName[i], done: false})
-                                        }
-                                        return [...oldArr, ...tempArr]  
-                                })
-                            }}>Enter Checklist Item</button>
-                        </form>
-
-                        {/* Tags */}
-
-                        <div style={{marginTop: '5vw'}}></div>  
-                        {tags.map((each) => {
-                        return (
-                            <div className='tag-box'>
-                                {each.name}
-                                <button className='delete-list' onClick={(e) => {
-                                    e.preventDefault()
-                                    setTags(tags.filter((each2) => each2.id !== each.id ))
-                                }}></button>
+                            {/* Checklist */}
+                            
+                            <div className='checklist-box'>
+                                {checklist.map((each) => {
+                                return (
+                                    <div key={each.id} className='list-item-box'>
+                                        {each.name}
+                                        <button className='delete-list' onClick={(e) => {
+                                        e.preventDefault()
+                                        setChecklist(checklist.filter((each2) => each2.id !== each.id ))
+                                        }}></button>
+                                    </div>
+                                    
+                                )
+                                })}
                             </div>
-                        )
-                    })} 
+                            <form className='array-form'>
+                                <input className='input-text' type='text' value={eachListItem} onChange={(e) => setEachListItem(e.target.value)}/>
+                                <button className='button-margin custom-button' onClick={(e) => {
+                                    e.preventDefault();
+                                    setEachListItem('')
+                                    return setChecklist((oldArr) => { 
+                                        const newChecklist = addChecklistItem(oldArr, eachListItem)
+                                        return newChecklist
+                                    })
+                                }}>Enter Checklist Item</button>
+                            </form>
+
+                            {/* Tags */}
+
+                                <div className='spacer'></div>
+                                {tags.map((each) => {
+                                return (
+                                    <div key={each.id} className='tag-box'>
+                                        {each.name}
+                                        <button className='delete-list' onClick={(e) => {
+                                            e.preventDefault()
+                                            setTags(tags.filter((each2) => each2.id !== each.id ))
+                                        }}></button>
+                                    </div>
+                                )
+                            })} 
                             <form className='array-form'>
                                 <input className='input-text' type='text' value={eachTag}  onChange={(e) => {
                                     setEachTag(e.target.value)
                                 }}/>
-                                <button className='custom-button' style={{marginTop: 20, marginBottom: 20}} onClick={(e) => {
+                                <button className='button-margin custom-button'  onClick={(e) => {
                                     e.preventDefault();
                                     setEachTag('')
-                                    const tempArr = []
                                     return setTags((oldArr) => { 
-                                    const eachName = eachTag.split(',')
-                                    const generatedId = () => {
-                                        setTagIdCount(tagIdCount + 1)
-                                        return tagIdCount + tempArr.length / 100000
-                                    }
-                                    let tempArr = []
-                                        for (let i = 0; i < eachName.length; i++) {
-                                            tempArr.push({id: generatedId(), name: eachName[i]})
-                                        }
-                                        return [...oldArr, ...tempArr]  
+                                        const newTags = addTag(oldArr, eachTag)
+                                        return newTags
                                 })
                                 }}>Enter Tag</button>
                             </form>
@@ -193,19 +216,9 @@ function NewTask() {
 
                         {/* Submit Button */}
 
-                        <button className='custom-submit' type='submit' onClick={() => {
-                            const existedArr = tasks.filter((each) => {
-                                return each.title === title
-                            })
-                        if (existedArr.length > 0) {
-                            alert('This title already exists')
-                        } else if (hasSymbolsEnd(title)) {
-                            alert('Title does not accept those characters at the end (could be a space)')
-                        } else if (hasSymbols(title)) {
-                            alert('Title has non-accepted symbols')
-                        } else if (title.length === 0) {
-                            alert('Title has to at least have one letter or number')
-                        } else {
+                        <button className='custom-submit' type='submit' onClick={(e) => {
+                            e.preventDefault()
+                        if (handleSubmit()) {
                             dispatch(add({
                                 title: title,
                                 priority: priority,
@@ -216,7 +229,7 @@ function NewTask() {
                                 originalTitle: title,
                                 done: false
                             }))
-                            return navigate('/')
+                            return navigate('/') 
                         }
                     }}>Create Task</button>
                     </form>

@@ -31,6 +31,7 @@ function ViewTask() {
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    console.log(tasks)
 
     // useState Vars
 

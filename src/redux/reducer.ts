@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 
 interface ChecklistItems {
     id: Number,
@@ -44,20 +44,29 @@ export const taskSlice = createSlice({
         update: (currentState, action: PayloadAction<Task>) => {
             // Query the targetted task from the array of tasks by title, then change the state with the new state
             const title: string = action.payload.originalTitle
-            for (let i = 0; i < currentState.tasks.length; i++) {
-                if (currentState.tasks[i].title === title) {
-                    currentState.tasks[i] = action.payload
-                    currentState.tasks[i].originalTitle = currentState.tasks[i].title
+            let index = 0
+            let currentTask = currentState.tasks.forEach((each) => {
+                if (each.title === title) {
+                    currentState.tasks[index] = action.payload
+                    currentState.tasks[index].originalTitle = currentState.tasks[index].title
                 }
-            }
+                index += 1
+            })   
         },
         remove: (currentState, action: PayloadAction<Task>) => {
             const title: string = action.payload.title
-            for (let i = 0; i < currentState.tasks.length; i++) {
-                if (currentState.tasks[i].title === title) {
-                    currentState.tasks.splice(i, 1)
+            // for (let i = 0; i < currentState.tasks.length; i++) {
+            //     if (currentState.tasks[i].title === title) {
+            //         currentState.tasks.splice(i, 1)
+            //     }
+            // }
+            let index = 0;
+            const currentTask = currentState.tasks.forEach((each) => {
+                if (each.title === title) {
+                    currentState.tasks.splice(index, 1)
                 }
-            }
+                index += 1
+            })
             
         }
 }})
