@@ -52,10 +52,10 @@ function Tasks (props) {
     
 
     // If the date of each task is the same day, display red warning, if its within 3 days, display basic warning.
-    const checkIfTimeNear = (targetTime) => {
-        if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000) {
+    const checkIfTimeNear = (targetTime, currentTask) => {
+        if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000 && !currentTask.done) {
             return 'today task-box-each'
-        } else if (targetTime - currentTime <= 259200000) {
+        } else if (targetTime - currentTime <= 259200000 && !currentTask.done) {
             return 'three-day task-box-each'
         } else {
             return 'task-box-each'
@@ -63,12 +63,36 @@ function Tasks (props) {
     }
 
     // If the date is near, make exclamation
-    const handleExclamation = (targetTime) => {
-        if (targetTime - currentTime <= 259200000) {
+    const handleExclamation = (targetTime, currentTask) => {
+        if (targetTime - currentTime <= 259200000 && !currentTask.done) {
             return 'exclamation'
         }
         return ''
-    }       
+    }      
+    
+    const handleDoneCrossed = (currentTask, defaultClass) => {
+        if (currentTask.done) {
+            return `done-crossed ${defaultClass}`
+        }
+        return defaultClass
+    }
+
+    const handleDone = (currentTask) => {
+        const shouldBeDone = currentTask.done 
+        const doneChecklist = currentTask.checklist.map((each) => {
+            return {id: each.id, name: each.name, done: !shouldBeDone}
+        })
+        dispatch(update({
+            title: currentTask.title,
+            priority: currentTask.priority,
+            complexity: currentTask.complexity,
+            dueDatex: currentTask.dueDatex,
+            checklist: doneChecklist,
+            tags: currentTask.tags,
+            originalTitle: currentTask.originalTitle,
+            done: !currentTask.done
+        }))
+    }
 
     // Generating the progress bar with math and returning it
     const generateProgressBar = (task) => {
@@ -128,25 +152,16 @@ function Tasks (props) {
             // Because title has to be unique here
             <div key={each.title}>
                 <div className='button-overlay' />
-                <Link to={`/view-task/${each.title}`} className={checkIfTimeNear(currentDate)}>
-                    <div className={handleExclamation(currentDate)}></div>
-                    <h2 className='regular-texted'>{each.title}</h2>
-                    <header className='regular-texted'>Priority Level: ({each.priority}/10)</header>
-                    <header className='regular-texted'>Complexity Level: ({each.complexity}/10)</header>
-                    <div className='regular-texted'>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
+                <Link to={`/view-task/${each.title}`} className={checkIfTimeNear(currentDate, each)}>
+                    <div className={handleExclamation(currentDate, each)}></div>
+                    <h2 className={handleDoneCrossed(each, 'regular-texted')}>{each.title}</h2>
+                    <header className={handleDoneCrossed(each, 'regular-texted')}>Priority Level: ({each.priority}/10)</header>
+                    <header className={handleDoneCrossed(each, 'regular-texted')}>Complexity Level: ({each.complexity}/10)</header>
+                    <div className={handleDoneCrossed(each, 'regular-texted')}>{`${new Date(currentDate).getMonth()+1}/${new Date(currentDate).getDate()}/${new Date(currentDate).getFullYear()}`},  {`${new Date(currentDate).toLocaleTimeString()}`}</div>
                     {generateProgressBar(each)}
                     {/* completion button */}
                     <button className='done-button-landing custom-button' onClick={(e) => {
-                        dispatch(update({
-                            title: each.title,
-                            priority: each.priority,
-                            complexity: each.complexity,
-                            dueDatex: each.dueDatex,
-                            checklist: each.checklist,
-                            tags: each.tags,
-                            originalTitle: each.originalTitle,
-                            done: !each.done
-                        }))
+                        handleDone(each)
                         e.preventDefault()
                         }}> {checkDone(each)} </button>
                 </Link>

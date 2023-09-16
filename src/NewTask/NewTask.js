@@ -7,7 +7,7 @@ import './NewTask.css'
 
 // Helper Vars
 const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
-const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', '!', '@', '#', "$", "^", "&", "*" ]
 const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 function NewTask() {
@@ -80,6 +80,20 @@ function NewTask() {
             return {id: generatedId(tagIdCount, tempArr, 'tag'), name: each}
         })
         return [...oldArr, ...newArr]  
+    }
+
+    const createTask = () => {
+        dispatch(add({
+            title: title,
+            priority: priority,
+            complexity: complexity,
+            dueDatex: JSON.stringify(dueDate),
+            checklist: checklist,
+            tags: tags,
+            originalTitle: title,
+            done: false
+        }))
+        return navigate('/') 
     }
 
     const handleSubmit = () => {
@@ -218,17 +232,7 @@ function NewTask() {
                         <button className='custom-submit' type='submit' onClick={(e) => {
                             e.preventDefault()
                         if (handleSubmit()) {
-                            dispatch(add({
-                                title: title,
-                                priority: priority,
-                                complexity: complexity,
-                                dueDatex: JSON.stringify(dueDate),
-                                checklist: checklist,
-                                tags: tags,
-                                originalTitle: title,
-                                done: false
-                            }))
-                            return navigate('/') 
+                            createTask()
                         }
                     }}>Create Task</button>
                     </form>

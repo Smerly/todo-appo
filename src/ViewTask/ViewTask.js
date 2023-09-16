@@ -9,10 +9,11 @@ import { current } from "@reduxjs/toolkit"
 const monthsArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 function ViewTask() {
+    // Queries
     const tasks = useSelector((state) => state.task.tasks)
     const slug = useParams().slug
 
-    // Helper Vars
+    // Helper Functions
 
     // Make done attribute user friendly
     const checkDone = (current) => {
@@ -22,8 +23,19 @@ function ViewTask() {
         return 'pending'
     }
 
-    // Helper Functions
-
+    const deleteTask = () => {
+        dispatch(remove({
+            title: currentTask.title,
+            priority: currentTask.priority,
+            complexity: currentTask.complexity,
+            dueDatex: Number(currentDate),
+            checklist: {name: currentTask.checklist, done: currentTask.done},
+            tags: currentTask.tags,
+            originalTitle: currentTask.title
+        }))
+        navigate('/')
+    }
+    
     // Generating the progress bar with math and returning it
     const generateProgressBar = () => {
         const completedListings = currentTask.checklist.filter((eachIn) => eachIn.done === true).length;
@@ -46,6 +58,23 @@ function ViewTask() {
     const currentTask = tasks.filter((each) => {
         return each.title === slug
     })[0]
+
+    const handleDone = () => {
+        const shouldBeDone = currentTask.done 
+        const doneChecklist = currentTask.checklist.map((each) => {
+            return {id: each.id, name: each.name, done: !shouldBeDone}
+        })
+        dispatch(update({
+            title: currentTask.title,
+            priority: currentTask.priority,
+            complexity: currentTask.complexity,
+            dueDatex: currentDate,
+            checklist: doneChecklist,
+            tags: currentTask.tags,
+            originalTitle: currentTask.originalTitle,
+            done: !currentTask.done
+        }))
+    }
 
     const currentDate = JSON.parse(currentTask.dueDatex)
 
@@ -73,16 +102,7 @@ function ViewTask() {
                         {/* Delete Button */}
 
                         <button onClick={() => {
-                            dispatch(remove({
-                                title: currentTask.title,
-                                priority: currentTask.priority,
-                                complexity: currentTask.complexity,
-                                dueDatex: Number(currentDate),
-                                checklist: {name: currentTask.checklist, done: currentTask.done},
-                                tags: currentTask.tags,
-                                originalTitle: currentTask.title
-                            }))
-                            navigate('/')
+                            deleteTask()
                         }} className='delete-icon'></button>
                     </div>
 
@@ -93,28 +113,22 @@ function ViewTask() {
                     {/* Done/Undone Button */}
 
                     <button className='custom-button-margined custom-button' onClick={() => {
-                        dispatch(update({
-                            title: currentTask.title,
-                            priority: currentTask.priority,
-                            complexity: currentTask.complexity,
-                            dueDatex: currentDate,
-                            checklist: currentTask.checklist,
-                            tags: currentTask.tags,
-                            originalTitle: currentTask.originalTitle,
-                            done: !currentTask.done
-                        }))
+                        // Makes task done
+                        handleDone()
                     }}> {checkDone(currentTask)} </button>
 
                     <h3>Priority: {currentTask.priority}</h3>
 
                     <h3>Complexity: {currentTask.complexity}</h3>
                     
+                    {/* Checklist Component */}
                     <h3>Checklist:</h3>
                     <Checklist currentTask={currentTask} />
                     
                     <h2>Progress</h2>
                     <div className='progress-bar-div'>{generateProgressBar()}</div>
 
+                    {/* Tags Component */}
                     <h3> Tags: </h3>
                     <Taglist currentTask={currentTask}/>
                 </div>

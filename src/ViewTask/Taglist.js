@@ -8,6 +8,20 @@ function Taglist(props) {
     const tasks = useSelector((state) => state.task.tasks)
     const dispatch = useDispatch()
 
+    const deleteTag = (each) => {
+        const updatedTag = currentTask.tags.filter((each2) => each2.id !== each.id)
+        dispatch(update({
+            title: currentTask.title,
+            priority: currentTask.priority,
+            complexity: currentTask.complexity,
+            dueDatex: currentDate,
+            checklist: currentTask.checklist,
+            tags: updatedTag,
+            originalTitle: currentTask.originalTitle,
+            done: currentTask.done
+        }))
+    }
+
     if (currentTask.tags.length > 0) {
         return (
             <div className='tags-box'>
@@ -16,18 +30,7 @@ function Taglist(props) {
                         <div key={each.id} className='tag-box'>
                             {each.name}
                             <button className='delete-list' onClick={(e) => {
-                                // e.preventDefault()
-                                const updatedTag = currentTask.tags.filter((each2) => each2.id !== each.id)
-                                dispatch(update({
-                                    title: currentTask.title,
-                                    priority: currentTask.priority,
-                                    complexity: currentTask.complexity,
-                                    dueDatex: currentDate,
-                                    checklist: currentTask.checklist,
-                                    tags: updatedTag,
-                                    originalTitle: currentTask.originalTitle,
-                                    done: currentTask.done
-                                }))
+                                deleteTag(each)
                             }}></button>
                         </div>
                     )

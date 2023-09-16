@@ -5,7 +5,7 @@ import { useParams, useNavigate, Link } from "react-router-dom"
 import { update } from "../redux/reducer.ts"
 
 const symbolsEnd = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', ' ', '.' ]
-const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`' ]
+const symbols = ['%', '{' , '}', '|', '^' , '~' , '[' , '\\', ']', '\`', '!', '@', '#', "$", "^", "&", "*" ]
 const optionsArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 function EditTask() {
@@ -102,6 +102,19 @@ function EditTask() {
             setChecklistIdCounter(counter + 1)
         }
         return counter + tempArr.length / 100000
+    }
+
+    const updateTask = () => {
+        dispatch(update({
+            title: title,
+            priority: priority,
+            complexity: complexity,
+            dueDatex: dueDate,
+            checklist: checklist,
+            tags: tags,
+            originalTitle: currentTask.originalTitle,
+            done: currentTask.done
+        }))
     }
 
     const addChecklistItem = (oldArr, item) => {
@@ -274,16 +287,7 @@ function EditTask() {
                         <button className='custom-submit' type='submit' onClick={(e) => {
                             e.preventDefault()
                             if (handleSubmit()) {
-                                dispatch(update({
-                                    title: title,
-                                    priority: priority,
-                                    complexity: complexity,
-                                    dueDatex: dueDate,
-                                    checklist: checklist,
-                                    tags: tags,
-                                    originalTitle: currentTask.originalTitle,
-                                    done: currentTask.done
-                                }))
+                                updateTask()
                                 return navigate('/') 
                             }
 
