@@ -104,7 +104,6 @@ function NewTask() {
     }
 
     // Render
-    
     return (
         <div className='new-task-wrapper'>
             <Link to={`/`} className='back-arrow'></Link>

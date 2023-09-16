@@ -55,11 +55,6 @@ export const taskSlice = createSlice({
         },
         remove: (currentState, action: PayloadAction<Task>) => {
             const title: string = action.payload.title
-            // for (let i = 0; i < currentState.tasks.length; i++) {
-            //     if (currentState.tasks[i].title === title) {
-            //         currentState.tasks.splice(i, 1)
-            //     }
-            // }
             let index = 0;
             const currentTask = currentState.tasks.forEach((each) => {
                 if (each.title === title) {
