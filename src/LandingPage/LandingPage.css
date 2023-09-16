@@ -198,12 +198,14 @@
 }
 
 .three-day {
-    animation: blinker 1.3s linear infinite;
+    animation: blinker 1.3s linear;
+    animation-iteration-count: 3;
 }
 
 .today {
     background-color: rgb(255, 157, 157);
-    animation: faster 1s linear infinite;
+    animation: faster 1s linear;
+    animation-iteration-count: 3;
 }
 
 .today:hover {
