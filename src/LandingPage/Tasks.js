@@ -2,6 +2,7 @@ import { UseSelector, useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { useState } from "react"
 import { update } from "../redux/reducer.ts"
+import { current } from "@reduxjs/toolkit"
 
 function Tasks (props) {
     const { searchFilter, sortTag, sort } = props
@@ -53,7 +54,7 @@ function Tasks (props) {
 
     // If the date of each task is the same day, display red warning, if its within 3 days, display basic warning.
     const checkIfTimeNear = (targetTime, currentTask) => {
-        if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000 && !currentTask.done) {
+        if (new Date(targetTime).getDate() === new Date(currentTime).getDate() && targetTime - currentTime <= 259200000 && !currentTask.done || targetTime - currentTime < 0) {
             return 'today task-box-each'
         } else if (targetTime - currentTime <= 259200000 && !currentTask.done) {
             return 'three-day task-box-each'
