@@ -21,7 +21,7 @@ function NewTask() {
     const [title, setTitle] = useState('')
     const [priority, setPriority] = useState(0)
     const [complexity, setComplexity] = useState(0)
-    const [dueDate, setDueDate] = useState(new Date().getTime())
+    const [dueDate, setDueDate] = useState('date')
 
     const [checklist, setChecklist] = useState([]);
     const [eachListItem, setEachListItem] = useState('')
@@ -83,17 +83,21 @@ function NewTask() {
     }
 
     const createTask = () => {
-        dispatch(add({
-            title: title,
-            priority: priority,
-            complexity: complexity,
-            dueDatex: JSON.stringify(dueDate),
-            checklist: checklist,
-            tags: tags,
-            originalTitle: title,
-            done: false
-        }))
-        return navigate('/') 
+        if (typeof dueDate !== 'string') {
+            dispatch(add({
+                title: title,
+                priority: priority,
+                complexity: complexity,
+                dueDatex: JSON.stringify(dueDate),
+                checklist: checklist,
+                tags: tags,
+                originalTitle: title,
+                done: false
+            }))
+            return navigate('/') 
+        } else {
+            alert('Required to Assign date to Task')
+        }
     }
 
     const handleSubmit = () => {
